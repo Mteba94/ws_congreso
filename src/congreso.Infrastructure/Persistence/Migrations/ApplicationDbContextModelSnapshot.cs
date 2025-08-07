@@ -17,7 +17,7 @@ namespace congreso.Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.7")
+                .HasAnnotation("ProductVersion", "9.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -208,7 +208,8 @@ namespace congreso.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("nombre");
 
                     b.Property<DateTime>("fechaCreacion")
@@ -335,6 +336,35 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Inscripciones");
+                });
+
+            modelBuilder.Entity("congreso.Domain.Entities.NivelAcademico", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("nivelAcademicoId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descripcion")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("descripcion");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int")
+                        .HasColumnName("estado");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("nombre");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NivelesAcademicos");
                 });
 
             modelBuilder.Entity("congreso.Domain.Entities.Ponente", b =>
@@ -609,7 +639,7 @@ namespace congreso.Infrastructure.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AccessFailedCount")
+                    b.Property<int?>("AccessFailedCount")
                         .HasColumnType("int")
                         .HasColumnName("accessFailedCount");
 
@@ -619,7 +649,7 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasColumnName("email");
 
-                    b.Property<bool>("EmailConfirmed")
+                    b.Property<bool?>("EmailConfirmed")
                         .HasColumnType("bit")
                         .HasColumnName("emailConfirmed");
 
@@ -631,18 +661,18 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("fechaNacimiento");
 
-                    b.Property<int>("LockoutEnabled")
+                    b.Property<int?>("LockoutEnabled")
                         .HasColumnType("int")
                         .HasColumnName("lockOutEnabled");
 
-                    b.Property<DateTime>("LockoutEnd")
+                    b.Property<DateTime?>("LockoutEnd")
                         .HasColumnType("datetime2")
                         .HasColumnName("lockOutEnd");
 
-                    b.Property<string>("NivelAcademico")
+                    b.Property<int>("NivelAcademicoId")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("nivelAcademico");
+                        .HasColumnType("int")
+                        .HasColumnName("nivelAcademicoId");
 
                     b.Property<string>("NumeroIdentificacion")
                         .HasMaxLength(50)
@@ -677,7 +707,7 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("securityStamp");
 
-                    b.Property<int>("Semestre")
+                    b.Property<int?>("Semestre")
                         .HasColumnType("int")
                         .HasColumnName("semestre");
 
@@ -721,6 +751,8 @@ namespace congreso.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("Email")
                         .IsUnique();
+
+                    b.HasIndex("NivelAcademicoId");
 
                     b.HasIndex("TipoIdentificacionId");
 
@@ -776,9 +808,9 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("congreso.Domain.Entities.Inscripcion", "Inscripcion")
-                        .WithMany()
+                        .WithMany("Asistencias")
                         .HasForeignKey("InscripcionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Actividad");
@@ -795,9 +827,9 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("congreso.Domain.Entities.Inscripcion", "Inscripcion")
-                        .WithMany()
+                        .WithMany("Diplomas")
                         .HasForeignKey("InscripcionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Actividad");
@@ -864,6 +896,12 @@ namespace congreso.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("congreso.Domain.Entities.User", b =>
                 {
+                    b.HasOne("congreso.Domain.Entities.NivelAcademico", "nivelAcademico")
+                        .WithMany()
+                        .HasForeignKey("NivelAcademicoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("congreso.Domain.Entities.TipoIdentificacion", "tipoIdentificacion")
                         .WithMany()
                         .HasForeignKey("TipoIdentificacionId")
@@ -876,9 +914,18 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("nivelAcademico");
+
                     b.Navigation("tipoIdentificacion");
 
                     b.Navigation("tipoParticipante");
+                });
+
+            modelBuilder.Entity("congreso.Domain.Entities.Inscripcion", b =>
+                {
+                    b.Navigation("Asistencias");
+
+                    b.Navigation("Diplomas");
                 });
 #pragma warning restore 612, 618
         }

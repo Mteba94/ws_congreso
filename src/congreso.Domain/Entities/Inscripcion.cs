@@ -14,5 +14,7 @@ namespace congreso.Domain.Entities
 
         public User User { get; set; } = null!;
         public Actividad Actividad { get; set; } = null!;
+        public ICollection<Asistencia>? Asistencias { get; set; }
+        public ICollection<Diploma>? Diplomas { get; set; }
     }
 }

@@ -58,8 +58,8 @@ namespace congreso.Infrastructure.Persistence.Context.Configurations
                 .HasColumnName("numeroIdentificacion")
                 .HasMaxLength(50);
 
-            builder.Property(x => x.NivelAcademico)
-                .HasColumnName("nivelAcademico")
+            builder.Property(x => x.NivelAcademicoId)
+                .HasColumnName("nivelAcademicoId")
                 .HasMaxLength(50);
 
             builder.Property(x => x.Semestre)

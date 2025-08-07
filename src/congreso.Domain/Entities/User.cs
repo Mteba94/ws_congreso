@@ -18,16 +18,17 @@ namespace congreso.Domain.Entities
         public DateTime FechaNacimiento { get; set; }
         public int TipoIdentificacionId { get; set; }
         public string? NumeroIdentificacion { get; set; }
-        public string? NivelAcademico { get; set; }
-        public int Semestre { get; set; }
+        public int NivelAcademicoId { get; set; }
+        public int? Semestre { get; set; }
         public string Password { get; set; } = null!;
-        public bool EmailConfirmed { get; set; }
-        public DateTime LockoutEnd { get; set; }
-        public int LockoutEnabled { get; set; }
-        public int AccessFailedCount { get; set; }
+        public bool? EmailConfirmed { get; set; }
+        public DateTime? LockoutEnd { get; set; }
+        public int? LockoutEnabled { get; set; }
+        public int? AccessFailedCount { get; set; }
         public string SecurityStamp { get; set; } = null!;
 
         public TipoIdentificacion tipoIdentificacion { get; set; } = null!;
         public TipoParticipante tipoParticipante { get; set; } = null!;
+        public NivelAcademico nivelAcademico { get; set; } = null!;
     }
 }

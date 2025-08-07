@@ -1,9 +1,12 @@
+using congreso.Application;
 using congreso.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddInfrastucture(builder.Configuration);
+builder.Services
+    .AddInfrastucture(builder.Configuration)
+    .AddApplication();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

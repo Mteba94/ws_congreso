@@ -22,6 +22,7 @@ namespace congreso.Infrastructure
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IOrderingQuery, OrderingQuery>();
 
             return services;
         }
