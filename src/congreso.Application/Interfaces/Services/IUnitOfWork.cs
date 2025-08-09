@@ -12,6 +12,8 @@ namespace congreso.Application.Interfaces.Services
     public interface IUnitOfWork : IDisposable
     {
         IGenericRepository<Congreso> Congreso { get; }
+        IUserRepository User { get; }
+        ITipoIdentificacionRepository TipoIdentificacion { get; }
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
         IDbTransaction BeginTransaction();
     }

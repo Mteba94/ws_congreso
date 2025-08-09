@@ -11,13 +11,19 @@ namespace congreso.Infrastructure.Services
     {
         private readonly ApplicationDbContext _context;
         public IGenericRepository<Congreso> Congreso { get; }
+        public IUserRepository User { get; }
+        public ITipoIdentificacionRepository TipoIdentificacion { get; }
 
         public UnitOfWork(
-            ApplicationDbContext context, 
-            IGenericRepository<Congreso> CongresoRepository)
+            ApplicationDbContext context,
+            IGenericRepository<Congreso> CongresoRepository,
+            IUserRepository user,
+            ITipoIdentificacionRepository tipoIdentificacionRepository)
         {
             _context = context;
             Congreso = CongresoRepository;
+            User = user;
+            TipoIdentificacion = tipoIdentificacionRepository;
         }
 
         public IDbTransaction BeginTransaction() => 

@@ -1,6 +1,7 @@
 ﻿using congreso.Application.Abstractions.Messaging;
 using congreso.Application.Behaviours;
 using FluentValidation;
+using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -9,7 +10,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        //TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
+        TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         services.AddScoped<HandlerExecutor>();

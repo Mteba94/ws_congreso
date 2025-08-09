@@ -2,6 +2,7 @@
 using congreso.Application.Commons.Bases;
 using congreso.Application.Dtos.User;
 using congreso.Application.Interfaces.Services;
+using congreso.Utilities.Static;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Helper = congreso.Application.Helpers.Helpers;
@@ -17,14 +18,15 @@ internal sealed class GetAllUserHandler(IUnitOfWork unitOfWork, IOrderingQuery o
 
         try
         {
-            var users = _unitOfWork.Congreso.GetAllQueryable();
+            var users = _unitOfWork.User.GetAllQueryable();
 
-            if(query.NumFilter is not null && !string.IsNullOrEmpty(query.TextFilter))
+
+            if (query.NumFilter is not null && !string.IsNullOrEmpty(query.TextFilter))
             {
                 switch (query.NumFilter)
                 {
                     case 1:
-                        users = users.Where(u => u.Nombre.Contains(query.TextFilter));
+                        //users = users.Where(u => u.Pnombre.Contains(query.TextFilter));
                         break;
                 }
             }
@@ -32,16 +34,18 @@ internal sealed class GetAllUserHandler(IUnitOfWork unitOfWork, IOrderingQuery o
             if(query.StateFilter is not null)
             {
                 var stateFilter = Helper.SplitStateFilter(query.StateFilter);
-                //users = users.Where(u => stateFilter.Contains(u.Estado));
+                users = users.Where(u => stateFilter.Contains(u.Estado.ToString()));
             }
 
             query.Sort ??= "Id";
-            var items = await _orderingQuery.Ordering(query, users).ToListAsync(cancellationToken);
+
+            var items = await _orderingQuery.Ordering(query, users)
+                .ToListAsync(cancellationToken);
 
             response.IsSuccess = true;
             response.TotalRecords = await users.CountAsync(cancellationToken);
             response.Data = items.Adapt<IEnumerable<UserResponseDto>>();
-            response.Message = "Consulta Exitosa";
+            response.Message = ReplyMessage.MESSAGE_QUERY;
         }
         catch(Exception ex)
         {
