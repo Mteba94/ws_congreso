@@ -6,26 +6,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace congreso.Infrastructure.Persistence.Repositories;
 
-public class TipoIdentificacionRepository : ITipoIdentificacionRepository
+public class TipoParticipanteRepository : ITipoParticipanteRepository
 {
     private readonly ApplicationDbContext _context;
 
-    public TipoIdentificacionRepository(ApplicationDbContext context)
+    public TipoParticipanteRepository(ApplicationDbContext context)
     {
         _context = context;
     }
 
-    public IQueryable<TipoIdentificacion> GetAllQueryable()
+    public IQueryable<TipoParticipante> GetAllQueryable()
     {
-        var query = _context.TiposIdentificacion
+        var query = _context.TiposParticipante
             .AsQueryable();
 
         return query;
     }
 
-    public async Task<IEnumerable<TipoIdentificacion>> GetAllAsync()
+    public async Task<IEnumerable<TipoParticipante>> GetAllAsync()
     {
-        var getAll = await _context.TiposIdentificacion
+        var getAll = await _context.TiposParticipante
                 .Where(x => x.Estado.Equals((int)TipoEstado.Activo))
                 .AsNoTracking()
                 .ToListAsync();
@@ -33,27 +33,28 @@ public class TipoIdentificacionRepository : ITipoIdentificacionRepository
         return getAll;
     }
 
-    public async Task<TipoIdentificacion> GetByIdAsync(int id)
+    public async Task<TipoParticipante> GetByIdAsync(int id)
     {
-        var getById = await _context.TiposIdentificacion
+        var getById = await _context.TiposParticipante
                 .SingleOrDefaultAsync(x => x.Id.Equals(id));
 
         return getById!;
     }
-
-    public async Task CreateAsync(TipoIdentificacion entity)
+    public async Task CreateAsync(TipoParticipante entity)
     {
         await _context.AddAsync(entity);
     }
-    public void Update(TipoIdentificacion entity)
+
+    public void Update(TipoParticipante entity)
     {
         _context.Update(entity);
     }
 
     public async Task DeleteAsync(int id)
     {
-        TipoIdentificacion entity = await GetByIdAsync(id);
+        TipoParticipante entity = await GetByIdAsync(id);
 
         _context.Remove(entity);
     }
+
 }

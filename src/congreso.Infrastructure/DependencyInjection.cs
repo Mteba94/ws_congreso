@@ -10,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using TallerIdentity.Infrastructure.Authentication;
 using Microsoft.Extensions.Configuration;
+using logging.Interface;
+using logging.Service;
+using logging.Model;
 
 namespace congreso.Infrastructure;
 
@@ -38,6 +41,9 @@ public static class DependencyInjection
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddTransient<IOrderingQuery, OrderingQuery>();
+
+        services.AddScoped<IFileLogger, FileLogger>();
+        services.Configure<LogsSettings>(configuration.GetSection("Logs"));
 
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();

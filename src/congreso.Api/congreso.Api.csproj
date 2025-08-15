@@ -19,4 +19,10 @@
     <ProjectReference Include="..\congreso.Infrastructure\congreso.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="logging">
+      <HintPath>..\congreso.Infrastructure\bin\Debug\net9.0\logging.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

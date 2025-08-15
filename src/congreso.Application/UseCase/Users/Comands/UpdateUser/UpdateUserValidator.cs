@@ -33,13 +33,13 @@ public class UpdateUserValidator : AbstractValidator<UpdateUserCommand>
             .NotNull().WithMessage("El correo electrónico es obligatorio.")
             .NotEmpty().WithMessage("El correo electrónico no puede estar vacío.")
             .EmailAddress().WithMessage("El correo electrónico no es válido.")
-            .MaximumLength(100).WithMessage("El correo electrónico no puede exceder los 100 caracteres.")
-            .MustAsync(async (email, cancellation) => await IsEmailUnique(email)).WithMessage("El correo electrónico ya está registrado.");
+            .MaximumLength(100).WithMessage("El correo electrónico no puede exceder los 100 caracteres.");
+            //.MustAsync(async (email, cancellation) => await IsEmailUnique(email)).WithMessage("El correo electrónico ya está registrado.");
 
         RuleFor(x => x.NumeroIdentificacion)
             .NotEmpty().WithMessage("El número de identificación es obligatorio.")
-            .When(x => IsOver18(x.FechaNacimiento))
-            .MustAsync(async (identificacion, cancellation) => await uniqueIdentificacion(identificacion!)).WithMessage("El número de identificación ya está registrado.");
+            .When(x => IsOver18(x.FechaNacimiento));
+            //.MustAsync(async (identificacion, cancellation) => await uniqueIdentificacion(identificacion!)).WithMessage("El número de identificación ya está registrado.");
     }
 
     private async Task<bool> IsEmailUnique(string email)

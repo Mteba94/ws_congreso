@@ -14,6 +14,7 @@ namespace congreso.Application.Interfaces.Services
         IGenericRepository<Congreso> Congreso { get; }
         IUserRepository User { get; }
         ITipoIdentificacionRepository TipoIdentificacion { get; }
+        ITipoParticipanteRepository TipoParticipante { get; }
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
         IDbTransaction BeginTransaction();
     }

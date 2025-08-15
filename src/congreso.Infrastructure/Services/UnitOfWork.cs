@@ -14,16 +14,20 @@ namespace congreso.Infrastructure.Services
         public IUserRepository User { get; }
         public ITipoIdentificacionRepository TipoIdentificacion { get; }
 
+        public ITipoParticipanteRepository TipoParticipante { get; }
+
         public UnitOfWork(
             ApplicationDbContext context,
             IGenericRepository<Congreso> CongresoRepository,
             IUserRepository user,
-            ITipoIdentificacionRepository tipoIdentificacionRepository)
+            ITipoIdentificacionRepository tipoIdentificacionRepository,
+            ITipoParticipanteRepository tipoParticipante)
         {
             _context = context;
             Congreso = CongresoRepository;
             User = user;
             TipoIdentificacion = tipoIdentificacionRepository;
+            TipoParticipante = tipoParticipante;
         }
 
         public IDbTransaction BeginTransaction() => 
