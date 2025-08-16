@@ -34,6 +34,7 @@ public class CreateUserValidator : AbstractValidator<CreateUserCommand>
             .NotEmpty().WithMessage("El correo electrónico no puede estar vacío.")
             .EmailAddress().WithMessage("El correo electrónico no es válido.")
             .MaximumLength(100).WithMessage("El correo electrónico no puede exceder los 100 caracteres.")
+            .MustAsync(async (email, cancellation) => await IsEmailVerificado(email)).WithMessage("El correo esta pendiente de verificación.")
             .MustAsync(async (email, cancellation) => await IsEmailUnique(email)).WithMessage("El correo electrónico ya está registrado.");
 
         RuleFor(x => x.NumeroIdentificacion)
@@ -46,6 +47,18 @@ public class CreateUserValidator : AbstractValidator<CreateUserCommand>
     {
         var user = await _unitOfWork.User.UserByEmailAsync(email);
         return user == null;
+    }
+
+    private async Task<bool> IsEmailVerificado(string email)
+    {
+        var user = await _unitOfWork.User.UserByEmailAsync(email);
+        
+        if(user != null)
+        {
+            return user.EmailConfirmed is true;
+        }
+
+        return true;
     }
 
     private bool IsOver18(DateTime fechaNacimiento)

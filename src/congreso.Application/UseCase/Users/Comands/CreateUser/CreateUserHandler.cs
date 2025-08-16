@@ -32,6 +32,8 @@ internal sealed class CreateUserHandler(IUnitOfWork unitOfWork, HandlerExecutor 
 
             var user = command.Adapt<User>();
             user.Password = BC.HashPassword(command.Password);
+            user.EmailConfirmed = false;
+            user.AccessFailedCount = 0;
             user.SecurityStamp = Guid.NewGuid().ToString();
             user.Estado = (int)TipoEstado.Activo;
             user.fechaCreacion = DateTime.Now;

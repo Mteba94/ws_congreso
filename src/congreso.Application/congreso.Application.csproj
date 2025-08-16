@@ -22,7 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UseCase\TiposIdentificacion\Commands\" />
+    <Folder Include="UseCase\TiposIdentificacion\Commands\DeleteTipoIdent\" />
+    <Folder Include="UseCase\TiposIdentificacion\Commands\UpdateTipoIdent\" />
     <Folder Include="UseCase\TiposParticipante\Commands\" />
   </ItemGroup>
 

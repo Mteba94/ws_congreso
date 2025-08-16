@@ -5,11 +5,11 @@ using congreso.Application.UseCase.Users.Comands.DeleteUser;
 using congreso.Application.UseCase.Users.Comands.UpdateUser;
 using congreso.Application.UseCase.Users.Queries.GetAllUser;
 using congreso.Application.UseCase.Users.Queries.GetById;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace congreso.Api.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class UserController(IDispatcher dispatcher) : ControllerBase

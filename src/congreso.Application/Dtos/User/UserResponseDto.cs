@@ -35,3 +35,10 @@ public class UserByIdResponseDto
     public string? NivelAcademico { get; set; }
     public int Semestre { get; set; }
 }
+
+public class  TFAUserResponseDTO
+{
+    //clase para validacion de Two Factor Auth
+    public string Email { get; set; } = null!;
+    public string codigo { get; set; } = null!;
+}
