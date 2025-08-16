@@ -20,6 +20,7 @@ namespace congreso.Infrastructure.Persistence.Context.Configurations
 
             builder.Property(c => c.Nombre)
                 .HasColumnName("nombre")
+                .HasMaxLength(100)
                 .IsRequired();
 
             builder.Property(c => c.FechaInicio)

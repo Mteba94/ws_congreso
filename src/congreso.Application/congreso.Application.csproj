@@ -7,7 +7,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\congreso.Domain\congreso.Domain.csproj" />
+    <ProjectReference Include="..\congreso.Utilities\congreso.Utilities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UseCase\TiposIdentificacion\Commands\DeleteTipoIdent\" />
+    <Folder Include="UseCase\TiposIdentificacion\Commands\UpdateTipoIdent\" />
+    <Folder Include="UseCase\TiposParticipante\Commands\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="logging">
+      <HintPath>..\..\..\ws_logger\src\logging\bin\Debug\net9.0\logging.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

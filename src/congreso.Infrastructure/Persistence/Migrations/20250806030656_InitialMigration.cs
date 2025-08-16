@@ -17,7 +17,7 @@ namespace congreso.Infrastructure.Persistence.Migrations
                 {
                     idCongreso = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     fechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
                     fechaFin = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Estado = table.Column<int>(type: "int", nullable: false),
@@ -31,6 +31,21 @@ namespace congreso.Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Congresos", x => x.idCongreso);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NivelesAcademicos",
+                columns: table => new
+                {
+                    nivelAcademicoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    descripcion = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    estado = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NivelesAcademicos", x => x.nivelAcademicoId);
                 });
 
             migrationBuilder.CreateTable(
@@ -217,13 +232,13 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     fechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     tipoIdentificacion = table.Column<int>(type: "int", nullable: false),
                     numeroIdentificacion = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    nivelAcademico = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    semestre = table.Column<int>(type: "int", nullable: false),
+                    nivelAcademicoId = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    semestre = table.Column<int>(type: "int", nullable: true),
                     password = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
-                    emailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    lockOutEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    lockOutEnabled = table.Column<int>(type: "int", nullable: false),
-                    accessFailedCount = table.Column<int>(type: "int", nullable: false),
+                    emailConfirmed = table.Column<bool>(type: "bit", nullable: true),
+                    lockOutEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    lockOutEnabled = table.Column<int>(type: "int", nullable: true),
+                    accessFailedCount = table.Column<int>(type: "int", nullable: true),
                     securityStamp = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     estado = table.Column<int>(type: "int", nullable: false),
                     fechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -236,6 +251,12 @@ namespace congreso.Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.idUsuario);
+                    table.ForeignKey(
+                        name: "FK_Usuarios_NivelesAcademicos_nivelAcademicoId",
+                        column: x => x.nivelAcademicoId,
+                        principalTable: "NivelesAcademicos",
+                        principalColumn: "nivelAcademicoId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Usuarios_TiposIdentificacion_tipoIdentificacion",
                         column: x => x.tipoIdentificacion,
@@ -368,8 +389,7 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         name: "FK_Asistencias_Inscripciones_InscripcionId",
                         column: x => x.InscripcionId,
                         principalTable: "Inscripciones",
-                        principalColumn: "idInscripcion",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "idInscripcion");
                 });
 
             migrationBuilder.CreateTable(
@@ -403,8 +423,7 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         name: "FK_Diplomas_Inscripciones_InscripcionId",
                         column: x => x.InscripcionId,
                         principalTable: "Inscripciones",
-                        principalColumn: "idInscripcion",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "idInscripcion");
                 });
 
             migrationBuilder.CreateIndex(
@@ -484,6 +503,11 @@ namespace congreso.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_nivelAcademicoId",
+                table: "Usuarios",
+                column: "nivelAcademicoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_tipoIdentificacion",
                 table: "Usuarios",
                 column: "tipoIdentificacion");
@@ -535,6 +559,9 @@ namespace congreso.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "TiposActividades");
+
+            migrationBuilder.DropTable(
+                name: "NivelesAcademicos");
 
             migrationBuilder.DropTable(
                 name: "TiposIdentificacion");

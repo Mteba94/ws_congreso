@@ -17,6 +17,11 @@ namespace congreso.Infrastructure.Persistence.Context.Configurations
 
             builder.Property(x => x.Id)
                 .HasColumnName("idAsistencia");
+
+            builder.HasOne(a => a.Inscripcion)
+                .WithMany(i => i.Asistencias)
+                .HasForeignKey(a => a.InscripcionId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
