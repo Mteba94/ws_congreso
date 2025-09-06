@@ -20,10 +20,4 @@
     <ProjectReference Include="..\congreso.Utilities\congreso.Utilities.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="logging">
-      <HintPath>..\..\..\ws_logger\src\logging\bin\Debug\net9.0\logging.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

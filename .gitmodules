@@ -1,0 +1,3 @@
+[submodule "src/logging"]
+	path = src/logging
+	url = https://github.com/Mteba94/ws_logger.git
