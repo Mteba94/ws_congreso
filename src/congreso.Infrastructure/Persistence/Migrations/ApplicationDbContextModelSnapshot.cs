@@ -64,6 +64,9 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("HoraInicio");
 
+                    b.Property<int>("NivelDificultadId")
+                        .HasColumnType("int");
+
                     b.Property<string>("RequisitosPrevios")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)")
@@ -105,6 +108,8 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CongresoId");
+
+                    b.HasIndex("NivelDificultadId");
 
                     b.HasIndex("TipoActividadId");
 
@@ -184,6 +189,47 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.HasIndex("InscripcionId");
 
                     b.ToTable("Asistencias");
+                });
+
+            modelBuilder.Entity("congreso.Domain.Entities.CodigoVerificacion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("idCodigoVerificacion");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasMaxLength(600)
+                        .HasColumnType("nvarchar(600)")
+                        .HasColumnName("codigo");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaExpiracion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Purpose")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("Codigo", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("CodigosVerificacion");
                 });
 
             modelBuilder.Entity("congreso.Domain.Entities.Congreso", b =>
@@ -367,6 +413,61 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.ToTable("NivelesAcademicos");
                 });
 
+            modelBuilder.Entity("congreso.Domain.Entities.NivelDificultad", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("idDificultad");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descripcion")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("descripcion");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int")
+                        .HasColumnName("estado");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("nombre");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NivelesDificultad");
+                });
+
+            modelBuilder.Entity("congreso.Domain.Entities.ObjetivoActividad", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("idObjetivo");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ActividadId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ObjetivoDesc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActividadId");
+
+                    b.ToTable("ObjetivosActividad");
+                });
+
             modelBuilder.Entity("congreso.Domain.Entities.Ponente", b =>
                 {
                     b.Property<int>("Id")
@@ -515,6 +616,27 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RolesUsuarios");
+                });
+
+            modelBuilder.Entity("congreso.Domain.Entities.School", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("idSchool");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<string>("nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Schools");
                 });
 
             modelBuilder.Entity("congreso.Domain.Entities.Tag", b =>
@@ -702,6 +824,9 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("segundoApellido");
 
+                    b.Property<int?>("SchoolId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
@@ -738,6 +863,11 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("fechaModificacion")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("image")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("imagen");
+
                     b.Property<int>("usuarioCreacion")
                         .HasColumnType("int");
 
@@ -754,6 +884,8 @@ namespace congreso.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("NivelAcademicoId");
 
+                    b.HasIndex("SchoolId");
+
                     b.HasIndex("TipoIdentificacionId");
 
                     b.HasIndex("TipoParticipanteId");
@@ -769,6 +901,12 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("congreso.Domain.Entities.NivelDificultad", "NivelDificultad")
+                        .WithMany()
+                        .HasForeignKey("NivelDificultadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("congreso.Domain.Entities.TipoActividad", "TipoActividad")
                         .WithMany()
                         .HasForeignKey("TipoActividadId")
@@ -776,6 +914,8 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Congreso");
+
+                    b.Navigation("NivelDificultad");
 
                     b.Navigation("TipoActividad");
                 });
@@ -818,6 +958,17 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.Navigation("Inscripcion");
                 });
 
+            modelBuilder.Entity("congreso.Domain.Entities.CodigoVerificacion", b =>
+                {
+                    b.HasOne("congreso.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("congreso.Domain.Entities.Diploma", b =>
                 {
                     b.HasOne("congreso.Domain.Entities.Actividad", "Actividad")
@@ -854,6 +1005,17 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.Navigation("Actividad");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("congreso.Domain.Entities.ObjetivoActividad", b =>
+                {
+                    b.HasOne("congreso.Domain.Entities.Actividad", "Actividad")
+                        .WithMany()
+                        .HasForeignKey("ActividadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Actividad");
                 });
 
             modelBuilder.Entity("congreso.Domain.Entities.PonenteTag", b =>
@@ -902,6 +1064,10 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("congreso.Domain.Entities.School", "School")
+                        .WithMany()
+                        .HasForeignKey("SchoolId");
+
                     b.HasOne("congreso.Domain.Entities.TipoIdentificacion", "tipoIdentificacion")
                         .WithMany()
                         .HasForeignKey("TipoIdentificacionId")
@@ -913,6 +1079,8 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .HasForeignKey("TipoParticipanteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("School");
 
                     b.Navigation("nivelAcademico");
 

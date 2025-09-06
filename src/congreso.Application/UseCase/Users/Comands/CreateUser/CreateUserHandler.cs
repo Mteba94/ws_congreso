@@ -1,21 +1,21 @@
 ﻿using congreso.Application.Abstractions.Messaging;
 using congreso.Application.Commons.Bases;
+using congreso.Application.Interfaces.ExternalWS;
 using congreso.Application.Interfaces.Services;
 using congreso.Domain.Entities;
 using congreso.Utilities.Static;
 using logging.Interface;
 using Mapster;
-using System.Text.Json;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using BC = BCrypt.Net.BCrypt;
 
 namespace congreso.Application.UseCase.Users.Comands.CreateUser;
 
-internal sealed class CreateUserHandler(IUnitOfWork unitOfWork, HandlerExecutor executor, IFileLogger fileLogger) : ICommandHandler<CreateUserCommand, bool>
+internal sealed class CreateUserHandler(IUnitOfWork unitOfWork, HandlerExecutor executor, IFileLogger fileLogger, ISendEmailAPI sendEmailAPI) : ICommandHandler<CreateUserCommand, bool>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly HandlerExecutor _executor = executor;
     private readonly IFileLogger _fileLogger = fileLogger;
+    private readonly ISendEmailAPI _sendEmailAPI = sendEmailAPI;
 
     public async Task<BaseResponse<bool>> Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
@@ -28,16 +28,19 @@ internal sealed class CreateUserHandler(IUnitOfWork unitOfWork, HandlerExecutor 
 
         try
         {
-            _fileLogger.Log("ws_congreso", "CreateUser", "0", JsonSerializer.Serialize(command));
+            _fileLogger.Log("ws_congreso", "CreateUser", "0", command);
 
             var user = command.Adapt<User>();
+
+            if(command.TipoIdentificacionId == 0)
+            {
+                user.TipoIdentificacionId = 1;
+            }
+
             user.Password = BC.HashPassword(command.Password);
             user.EmailConfirmed = false;
             user.AccessFailedCount = 0;
             user.SecurityStamp = Guid.NewGuid().ToString();
-            user.Estado = (int)TipoEstado.Activo;
-            user.fechaCreacion = DateTime.Now;
-            user.usuarioCreacion = 1;
 
             await _unitOfWork.User.CreateAsync(user);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -45,14 +48,14 @@ internal sealed class CreateUserHandler(IUnitOfWork unitOfWork, HandlerExecutor 
             response.IsSuccess = true;
             response.Message = ReplyMessage.MESSAGE_SAVE;
 
-            _fileLogger.Log("ws_congreso", "CreateUser", "1", JsonSerializer.Serialize(response));
+            _fileLogger.Log("ws_congreso", "CreateUser", "1", response);
         }
         catch (Exception ex)
         {
             response.IsSuccess = false;
             response.Message = ex.Message;
 
-            _fileLogger.Log("ws_congreso", "CreateUser", "1", JsonSerializer.Serialize(response), ex.Message);
+            _fileLogger.Log("ws_congreso", "CreateUser", "1", response, ex.Message);
         }
 
         return response;

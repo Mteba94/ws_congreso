@@ -4,10 +4,8 @@ using congreso.Application.Dtos.User;
 using congreso.Application.Interfaces.Services;
 using congreso.Utilities.Static;
 using logging.Interface;
-using logging.Service;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 using Helper = congreso.Application.Helpers.Helpers;
 
 namespace congreso.Application.UseCase.Users.Queries.GetAllUser;
@@ -23,7 +21,7 @@ internal sealed class GetAllUserHandler(IUnitOfWork unitOfWork, IOrderingQuery o
 
         try
         {
-            _fileLogger.Log("ws_congreso", "GetAllUser", "0", JsonSerializer.Serialize(query));
+            _fileLogger.Log("ws_congreso", "GetAllUser", "0", query);
 
             var users = _unitOfWork.User.GetAllQueryable();
 
@@ -53,14 +51,14 @@ internal sealed class GetAllUserHandler(IUnitOfWork unitOfWork, IOrderingQuery o
             response.Data = items.Adapt<IEnumerable<UserResponseDto>>();
             response.Message = ReplyMessage.MESSAGE_QUERY;
 
-            _fileLogger.Log("ws_congreso", "GetAllUser", "1", JsonSerializer.Serialize(response));
+            _fileLogger.Log("ws_congreso", "GetAllUser", "1", response);
         }
         catch (Exception ex)
         {
             response.IsSuccess = false;
             response.Message = ex.Message;
 
-            _fileLogger.Log("ws_congreso", "GetAllUser", "1", JsonSerializer.Serialize(response), ex.Message);
+            _fileLogger.Log("ws_congreso", "GetAllUser", "1", response, ex.Message);
         }
 
         return response;

@@ -19,8 +19,11 @@ namespace congreso.Domain.Entities
         public int CuposTotales { get; set; }
         public string? Ubicacion { get; set; }
         public string? RequisitosPrevios { get; set; }
+        public int NivelDificultadId { get; set; }
+
 
         public Congreso Congreso { get; set; } = null!;
         public TipoActividad TipoActividad { get; set; } = null!;
+        public NivelDificultad NivelDificultad { get; set; } = null!;
     }
 }

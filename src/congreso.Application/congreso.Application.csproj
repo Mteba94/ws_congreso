@@ -22,9 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="UseCase\Actividades\Commands\" />
+    <Folder Include="UseCase\Actividades\Queries\" />
+    <Folder Include="UseCase\Congresos\Commands\" />
+    <Folder Include="UseCase\NivelesDificultad\Queries\" />
     <Folder Include="UseCase\TiposIdentificacion\Commands\DeleteTipoIdent\" />
     <Folder Include="UseCase\TiposIdentificacion\Commands\UpdateTipoIdent\" />
-    <Folder Include="UseCase\TiposParticipante\Commands\" />
   </ItemGroup>
 
   <ItemGroup>

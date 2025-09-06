@@ -14,11 +14,13 @@ public class UserMapping : IRegister
         config.NewConfig<User, UserResponseDto>()
             .Map(dest => dest.UserId, src => src.Id)
             .Map(dest => dest.EstadoDescripcion, src => src.Estado == (int)TipoEstado.Activo ? "Activo" : "Inactivo")
+            .Map(dest => dest.NivelAcademico, src => src.NivelAcademicoId)
             .TwoWays();
 
 
         config.NewConfig<User, UserByIdResponseDto>()
             .Map(dest => dest.UserId, src => src.Id)
+            .Map(dest => dest.NivelAcademico, src => src.NivelAcademicoId)
             .TwoWays();
 
         config.NewConfig<CreateUserCommand, User>();

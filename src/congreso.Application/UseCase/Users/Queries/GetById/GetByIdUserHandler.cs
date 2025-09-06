@@ -4,14 +4,8 @@ using congreso.Application.Dtos.User;
 using congreso.Application.Interfaces.Services;
 using congreso.Utilities.Static;
 using logging.Interface;
-using logging.Service;
 using Mapster;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace congreso.Application.UseCase.Users.Queries.GetById;
 
@@ -26,7 +20,7 @@ internal sealed class GetByIdUserHandler(IUnitOfWork unitOfWork, IFileLogger fil
 
         try
         {
-            _fileLogger.Log("ws_congreso", "GetByIdUser", "0", JsonSerializer.Serialize(query));
+            _fileLogger.Log("ws_congreso", "GetByIdUser", "0", query);
 
             var user = await _unitOfWork.User.GetByIdAsync(query.UserId);
 
@@ -35,7 +29,7 @@ internal sealed class GetByIdUserHandler(IUnitOfWork unitOfWork, IFileLogger fil
                 response.IsSuccess = false;
                 response.Message = ReplyMessage.MESSAGE_QUERY_EMPTY;
 
-                _fileLogger.Log("ws_congreso", "GetByIdUser", "1", JsonSerializer.Serialize(response));
+                _fileLogger.Log("ws_congreso", "GetByIdUser", "1", response);
 
                 return response;
             }
@@ -44,14 +38,14 @@ internal sealed class GetByIdUserHandler(IUnitOfWork unitOfWork, IFileLogger fil
             response.Data = user.Adapt<UserByIdResponseDto>();
             response.Message = ReplyMessage.MESSAGE_QUERY;
 
-            _fileLogger.Log("ws_congreso", "GetByIdUser", "1", JsonSerializer.Serialize(response));
+            _fileLogger.Log("ws_congreso", "GetByIdUser", "1", response);
         }
         catch (Exception ex)
         {
             response.IsSuccess = false;
-            response.Message = ex.Message;
+            response.Message = ReplyMessage.MESSAGE_FAILED;
 
-            _fileLogger.Log("ws_congreso", "GetByIdUser", "1", JsonSerializer.Serialize(response), ex.Message);
+            _fileLogger.Log("ws_congreso", "GetByIdUser", "1", response, ex.Message);
         }
 
         return response;

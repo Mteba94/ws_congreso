@@ -6,5 +6,12 @@ public class TipoParticipanteResponseDTO
     public string Nombre { get; set; } = null!;
     public string? Descripcion { get; set; }
     public int Estado { get; set; }
-    public string? EstadoDescipcion { get; set; }
+    public string? EstadoDescripcion { get; set; }
+}
+
+public class TipoParticipanteByIdResponseDTO
+{
+    public int Id { get; set; }
+    public string Nombre { get; set; } = null!;
+    public string? Descripcion { get; set; }
 }

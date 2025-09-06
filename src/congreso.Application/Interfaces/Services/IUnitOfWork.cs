@@ -1,11 +1,6 @@
 ﻿using congreso.Application.Interfaces.Persistence;
 using congreso.Domain.Entities;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace congreso.Application.Interfaces.Services
 {
@@ -15,6 +10,12 @@ namespace congreso.Application.Interfaces.Services
         IUserRepository User { get; }
         ITipoIdentificacionRepository TipoIdentificacion { get; }
         ITipoParticipanteRepository TipoParticipante { get; }
+        ICodigoRepository CodigoVerificacion { get; }
+        ICommonRepository<NivelAcademico> NivelAcademico { get; }
+        ICommonRepository<School> School { get; }
+        IGenericRepository<Ponente> Ponente { get; }
+        IActividadRepository Actividad { get; }
+        ICommonRepository<TipoActividad> TipoActividad { get; }
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
         IDbTransaction BeginTransaction();
     }

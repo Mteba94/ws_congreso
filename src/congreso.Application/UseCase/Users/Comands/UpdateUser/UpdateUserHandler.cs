@@ -32,7 +32,7 @@ internal sealed class UpdateUserHandler(IUnitOfWork unitOfWork, HandlerExecutor 
 
         try
         {
-            _fileLogger.Log("ws_congreso", "UpdateUser", "0", JsonSerializer.Serialize(command));
+            _fileLogger.Log("ws_congreso", "UpdateUser", "0", command);
 
             var validUser = await _unitOfWork.User.GetByIdAsync(command.UserId);
 
@@ -51,7 +51,7 @@ internal sealed class UpdateUserHandler(IUnitOfWork unitOfWork, HandlerExecutor 
                 response.IsSuccess = true;
                 response.Message = ReplyMessage.MESSAGE_UPDATE;
 
-                _fileLogger.Log("ws_congreso", "UpdateUser", "1", JsonSerializer.Serialize(response));
+                _fileLogger.Log("ws_congreso", "UpdateUser", "1", response);
 
                 return response;
             }
@@ -59,15 +59,15 @@ internal sealed class UpdateUserHandler(IUnitOfWork unitOfWork, HandlerExecutor 
             response.IsSuccess = false;
             response.Message = ReplyMessage.MESSAGE_QUERY_EMPTY;
 
-            _fileLogger.Log("ws_congreso", "UpdateUser", "1", JsonSerializer.Serialize(response));
+            _fileLogger.Log("ws_congreso", "UpdateUser", "1", response);
 
         }
         catch (Exception ex)
         {
             response.IsSuccess = false;
-            response.Message = ex.Message;
+            response.Message = ReplyMessage.MESSAGE_FAILED;
 
-            _fileLogger.Log("ws_congreso", "UpdateUser", "1", JsonSerializer.Serialize(response), ex.Message);
+            _fileLogger.Log("ws_congreso", "UpdateUser", "1", response, ex.Message);
         }
 
         return response;

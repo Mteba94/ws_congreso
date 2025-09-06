@@ -12,12 +12,14 @@ namespace congreso.Domain.Entities
         public string? Snombre { get; set; }
         public string Papellido { get; set; } = null!;
         public string? Sapellido { get; set; }
+        public string? image { get; set; }
         public int TipoParticipanteId { get; set; }
         public string Email { get; set; } = null!;
         public string? Telefono { get; set; }
         public DateTime FechaNacimiento { get; set; }
         public int TipoIdentificacionId { get; set; }
         public string? NumeroIdentificacion { get; set; }
+        public int? SchoolId { get; set; }
         public int NivelAcademicoId { get; set; }
         public int? Semestre { get; set; }
         public string Password { get; set; } = null!;
@@ -30,5 +32,6 @@ namespace congreso.Domain.Entities
         public TipoIdentificacion tipoIdentificacion { get; set; } = null!;
         public TipoParticipante tipoParticipante { get; set; } = null!;
         public NivelAcademico nivelAcademico { get; set; } = null!;
+        public School School { get; set; } = null!;
     }
 }

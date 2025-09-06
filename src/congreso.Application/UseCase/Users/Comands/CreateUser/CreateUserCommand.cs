@@ -14,6 +14,8 @@ public sealed class CreateUserCommand : ICommand<bool>
     public DateTime FechaNacimiento { get; set; }
     public int TipoIdentificacionId { get; set; }
     public string? NumeroIdentificacion { get; set; }
+    public int? SchoolId { get; set; }
+    public string? SchoolName { get; set; }
     public int NivelAcademicoId { get; set; }
     public int? Semestre { get; set; }
     public string Password { get; set; } = null!;

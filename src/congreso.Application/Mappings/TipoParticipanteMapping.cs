@@ -12,11 +12,12 @@ namespace congreso.Application.Mappings
         public void Register(TypeAdapterConfig config)
         {
             config.NewConfig<TipoParticipante, TipoParticipanteResponseDTO>()
-            .Map(dest => dest.EstadoDescipcion, src => src.Estado == (int)TipoEstado.Activo ? "Activo" : "Inactivo")
+            .Map(dest => dest.EstadoDescripcion, src => src.Estado == (int)TipoEstado.Activo ? "Activo" : "Inactivo")
             .TwoWays();
 
             config.NewConfig<TipoParticipante, SelectResponseDto>()
                 .Map(dest => dest.Id, src => src.Id)
+                .Map(dest => dest.Nombre , src => src.Nombre)
                 .Map(dest => dest.Descripcion, src => src.Descripcion)
                 .TwoWays();
         }

@@ -38,9 +38,8 @@ public class CreateUserValidator : AbstractValidator<CreateUserCommand>
             .MustAsync(async (email, cancellation) => await IsEmailUnique(email)).WithMessage("El correo electrónico ya está registrado.");
 
         RuleFor(x => x.NumeroIdentificacion)
-            .NotEmpty().WithMessage("El número de identificación es obligatorio.")
-            .When(x => IsOver18(x.FechaNacimiento))
-            .MustAsync(async (identificacion, cancellation) => await uniqueIdentificacion(identificacion!)).WithMessage("El número de identificación ya está registrado.");
+            .MustAsync(async (identificacion, cancellation) => await uniqueIdentificacion(identificacion!)).WithMessage("El número de identificación ya está registrado.")
+            .When(x => IsOver18(x.FechaNacimiento));
     }
 
     private async Task<bool> IsEmailUnique(string email)
@@ -77,6 +76,11 @@ public class CreateUserValidator : AbstractValidator<CreateUserCommand>
 
     private async Task<bool> uniqueIdentificacion(string identificacion)
     {
+        if(identificacion == null)
+        {
+            return false;
+        }
+
         var user = await _unitOfWork.User.UserByIdentificacion(identificacion);
 
         return user == null;

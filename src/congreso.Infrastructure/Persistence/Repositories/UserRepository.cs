@@ -9,6 +9,7 @@ namespace congreso.Infrastructure.Persistence.Repositories;
 public class UserRepository(ApplicationDbContext context) : GenericRepository<User>(context), IUserRepository
 {
     private readonly ApplicationDbContext _context = context;
+
     public async Task<User> UserByEmailAsync(string email)
     {
         var user = await _context.Usuarios

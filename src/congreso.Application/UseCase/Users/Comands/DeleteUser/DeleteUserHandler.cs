@@ -20,7 +20,7 @@ internal sealed class DeleteUserHandler(IUnitOfWork unitOfWork, IFileLogger file
 
         try
         {
-            _fileLogger.Log("ws_congreso", "DeleteUser", "0", JsonSerializer.Serialize(command));
+            _fileLogger.Log("ws_congreso", "DeleteUser", "0", command);
 
             var existsUser = await _unitOfWork.User.GetByIdAsync(command.UserId);
 
@@ -29,7 +29,7 @@ internal sealed class DeleteUserHandler(IUnitOfWork unitOfWork, IFileLogger file
                 response.IsSuccess = false;
                 response.Message = ReplyMessage.MESSAGE_QUERY_EMPTY;
 
-                _fileLogger.Log("ws_congreso", "DeleteUser", "1", JsonSerializer.Serialize(response));
+                _fileLogger.Log("ws_congreso", "DeleteUser", "1", response);
                 return response;
             }
 
@@ -43,14 +43,14 @@ internal sealed class DeleteUserHandler(IUnitOfWork unitOfWork, IFileLogger file
             response.IsSuccess = true;
             response.Message = ReplyMessage.MESSAGE_DELETE;
 
-            _fileLogger.Log("ws_congreso", "DeleteUser", "1", JsonSerializer.Serialize(response));
+            _fileLogger.Log("ws_congreso", "DeleteUser", "1", response);
         }
         catch (Exception ex)
         {
             response.IsSuccess = false;
             response.Message = ex.Message;
 
-            _fileLogger.Log("ws_congreso", "DeleteUser", "1", JsonSerializer.Serialize(response), ex.Message);
+            _fileLogger.Log("ws_congreso", "DeleteUser", "1", response, ex.Message);
         }
 
         return response;

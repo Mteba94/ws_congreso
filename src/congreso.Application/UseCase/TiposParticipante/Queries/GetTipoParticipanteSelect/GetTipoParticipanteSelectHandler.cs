@@ -20,7 +20,7 @@ internal sealed class GetTipoParticipanteSelectHandler(IUnitOfWork unitOfWork, I
 
         try
         {
-            _fileLogger.Log("ws_congreso", "GetTipoParticipanteSelectHandler", "0", JsonSerializer.Serialize(query));
+            _fileLogger.Log("ws_congreso", "GetTipoParticipanteSelectHandler", "0", query);
 
             var tipoParticipante = await _unitOfWork.TipoParticipante.GetAllAsync();
 
@@ -29,17 +29,23 @@ internal sealed class GetTipoParticipanteSelectHandler(IUnitOfWork unitOfWork, I
                 response.IsSuccess = false;
                 response.Message = ReplyMessage.MESSAGE_QUERY_EMPTY;
 
-                _fileLogger.Log("ws_congreso", "GetTipoParticipanteSelectHandler", "1", JsonSerializer.Serialize(response));
+                _fileLogger.Log("ws_congreso", "GetTipoParticipanteSelectHandler", "1", response);
+
+                return response;
             }
 
             response.IsSuccess = true;
             response.Data = tipoParticipante.Adapt<IEnumerable<SelectResponseDto>>();
             response.Message = ReplyMessage.MESSAGE_QUERY;
+
+            _fileLogger.Log("ws_congreso", "GetTipoParticipanteSelectHandler", "1", response);
         }
         catch (Exception ex)
         {
             response.IsSuccess = false;
             response.Message = ReplyMessage.MESSAGE_EXCEPTION;
+
+            _fileLogger.Log("ws_congreso", "GetTipoParticipanteSelectHandler", "1", response, ex.Message);
         }
 
         return response;

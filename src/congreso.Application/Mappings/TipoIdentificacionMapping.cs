@@ -1,4 +1,5 @@
-﻿using congreso.Application.Dtos.TipoIdentificacion;
+﻿using congreso.Application.Dtos.Commons;
+using congreso.Application.Dtos.TipoIdentificacion;
 using congreso.Domain.Entities;
 using congreso.Utilities.Static;
 using Mapster;
@@ -10,7 +11,11 @@ public class TipoIdentificacionMapping : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.NewConfig<TipoIdentificacion, TipoIdentificacionResponseDTO>()
-            .Map(dest => dest.EstadoDescipcion, src => src.Estado == (int)TipoEstado.Activo ? "Activo" : "Inactivo")
+            .Map(dest => dest.EstadoDescripcion, src => src.Estado == (int)TipoEstado.Activo ? "Activo" : "Inactivo")
+            .TwoWays();
+
+        config.NewConfig<TipoIdentificacion, SelectResponseDto>()
+            .Map(dest => dest.Id, src => src.Id)
             .TwoWays();
     }
 }

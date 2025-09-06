@@ -23,6 +23,10 @@ namespace congreso.Infrastructure.Persistence.Context
         public DbSet<Asistencia> Asistencias { get; set; }
         public DbSet<Diploma> Diplomas { get; set; }
         public DbSet<NivelAcademico> NivelesAcademicos { get; set; }
+        public DbSet<CodigoVerificacion> CodigosVerificacion { get; set; }
+        public DbSet<NivelDificultad> NivelesDificultad { get; set; }
+        public DbSet<ObjetivoActividad> ObjetivosActividad { get; set; }
+        public DbSet<School> Schools { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

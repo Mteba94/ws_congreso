@@ -27,10 +27,9 @@ internal sealed class CreateTipoIdentHandler(IUnitOfWork unitOfWork, IFileLogger
 
         try
         {
-            _fileLogger.Log("ws_congreso", "CreateTipoIdent", "0", JsonSerializer.Serialize(command));
+            _fileLogger.Log("ws_congreso", "CreateTipoIdent", "0", command);
 
             var tipoIdent = command.Adapt<TipoIdentificacion>();
-            tipoIdent.Estado = (int)TipoEstado.Activo;
 
             await _unitOfWork.TipoIdentificacion.CreateAsync(tipoIdent);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -41,9 +40,9 @@ internal sealed class CreateTipoIdentHandler(IUnitOfWork unitOfWork, IFileLogger
         catch (Exception ex)
         {
             response.IsSuccess = false;
-            response.Message = ex.Message;
+            response.Message = ReplyMessage.MESSAGE_EXCEPTION;
 
-            _fileLogger.Log("ws_congreso", "CreateTipoIdent", "1", JsonSerializer.Serialize(response), ex.Message);
+            _fileLogger.Log("ws_congreso", "CreateTipoIdent", "1", response, ex.Message);
         }
 
         return response;

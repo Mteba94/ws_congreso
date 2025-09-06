@@ -23,7 +23,7 @@ internal sealed class GetAllTipoIdentificacionHandler(IUnitOfWork unitOfWork, IO
 
         try
         {
-            _fileLogger.Log("ws_congreso", "GetAllTipoIdentificacion", "0", JsonSerializer.Serialize(query));
+            _fileLogger.Log("ws_congreso", "GetAllTipoIdentificacion", "0", query);
 
             var tiposIdentificacion = _unitOfWork.TipoIdentificacion.GetAllQueryable();
 
@@ -52,14 +52,14 @@ internal sealed class GetAllTipoIdentificacionHandler(IUnitOfWork unitOfWork, IO
             response.Data = items.Adapt<IEnumerable<TipoIdentificacionResponseDTO>>();
             response.Message = ReplyMessage.MESSAGE_QUERY;
 
-            _fileLogger.Log("ws_congreso", "GetAllTipoIdentificacion", "1", JsonSerializer.Serialize(response));
+            _fileLogger.Log("ws_congreso", "GetAllTipoIdentificacion", "1", response);
         }
         catch (Exception ex)
         {
             response.IsSuccess = false;
             response.Message = ex.Message;
 
-            _fileLogger.Log("ws_congreso", "GetAllTipoIdentificacion", "1", JsonSerializer.Serialize(response), ex.Message);
+            _fileLogger.Log("ws_congreso", "GetAllTipoIdentificacion", "1", response, ex.Message);
         }
         return response;
     }

@@ -34,6 +34,10 @@ namespace congreso.Infrastructure.Persistence.Context.Configurations
                 .HasColumnName("segundoApellido")
                 .HasMaxLength(50);
 
+            builder.Property(x => x.image)
+                .HasColumnName("imagen")
+                .HasMaxLength(500);
+
             builder.Property(x => x.TipoParticipanteId)
                 .HasColumnName("tipoParticipante");
 

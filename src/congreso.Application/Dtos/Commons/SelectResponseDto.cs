@@ -2,7 +2,7 @@
 
 public record SelectResponseDto
 {
-    public int Id { get; init; }
-    public string? Nombre { get; init; }
-    public string? Descripcion { get; init; }
+    public int Id { get; set; }
+    public string Nombre { get; set; } = null!;
+    public string? Descripcion { get; set; }
 }

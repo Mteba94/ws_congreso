@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using logging.Interface;
 using logging.Service;
 using logging.Model;
+using congreso.Infrastructure.ExternalServices.Service;
+using congreso.Application.Interfaces.ExternalWS;
 
 namespace congreso.Infrastructure;
 
@@ -28,6 +30,7 @@ public static class DependencyInjection
         });
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        services.AddScoped(typeof(ICommonRepository<>), typeof(CommonRepository<>));
 
         var infraAsm = Assembly.GetExecutingAssembly();
         foreach (var impl in infraAsm.GetTypes()
@@ -42,8 +45,18 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddTransient<IOrderingQuery, OrderingQuery>();
 
+        services.AddScoped<ISendEmailAPI, SendEmailAPI>();
+
         services.AddScoped<IFileLogger, FileLogger>();
         services.Configure<LogsSettings>(configuration.GetSection("Logs"));
+
+        services.ConfigureHttpClientDefaults(builder =>
+        {
+            builder.ConfigureHttpClient(client =>
+            {
+                client.BaseAddress = new Uri(configuration["ExternalServices:EmailService"]!);
+            });
+        });
 
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
