@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\congreso.Application\congreso.Application.csproj" />
     <ProjectReference Include="..\congreso.Utilities\congreso.Utilities.csproj" />
+	<ProjectReference Include="..\logging\src\logging\logging.csproj" />
   </ItemGroup>
 
 </Project>

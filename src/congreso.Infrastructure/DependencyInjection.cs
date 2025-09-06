@@ -10,11 +10,12 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using TallerIdentity.Infrastructure.Authentication;
 using Microsoft.Extensions.Configuration;
+
+using congreso.Infrastructure.ExternalServices.Service;
+using congreso.Application.Interfaces.ExternalWS;
 using logging.Interface;
 using logging.Service;
 using logging.Model;
-using congreso.Infrastructure.ExternalServices.Service;
-using congreso.Application.Interfaces.ExternalWS;
 
 namespace congreso.Infrastructure;
 
