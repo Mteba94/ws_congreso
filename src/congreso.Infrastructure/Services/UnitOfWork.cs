@@ -20,7 +20,10 @@ namespace congreso.Infrastructure.Services
         public IGenericRepository<Ponente> Ponente { get; }
         public IActividadRepository Actividad { get; }
         public ICommonRepository<TipoActividad> TipoActividad { get; }
-
+        public ICommonRepository<RoleUsuario> RoleUsuario { get; }
+        public ICommonRepository<Role> Role { get; }
+        public IPermisosRepository Permisos { get; }
+        public IMenuRepository Menus { get; }
         public UnitOfWork(
             ApplicationDbContext context,
             IGenericRepository<Congreso> CongresoRepository,
@@ -32,7 +35,11 @@ namespace congreso.Infrastructure.Services
             ICommonRepository<School> school,
             IGenericRepository<Ponente> ponente,
             IActividadRepository actividad,
-            ICommonRepository<TipoActividad> tipoActividad)
+            ICommonRepository<TipoActividad> tipoActividad,
+            ICommonRepository<RoleUsuario> roleUsuario,
+            ICommonRepository<Role> role,
+            IPermisosRepository permisos,
+            IMenuRepository menus)
         {
             _context = context;
             Congreso = CongresoRepository;
@@ -45,6 +52,10 @@ namespace congreso.Infrastructure.Services
             Ponente = ponente;
             Actividad = actividad;
             TipoActividad = tipoActividad;
+            RoleUsuario = roleUsuario;
+            Role = role;
+            Permisos = permisos;
+            Menus = menus;
         }
 
         public IDbTransaction BeginTransaction() => 

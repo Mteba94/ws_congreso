@@ -384,6 +384,97 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.ToTable("Inscripciones");
                 });
 
+            modelBuilder.Entity("congreso.Domain.Entities.Menu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("MenuId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("FatherId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Icon")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime>("fechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("fechaEliminacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("fechaModificacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("usuarioCreacion")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("usuarioEliminacion")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("usuarioModificacion")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Menus");
+                });
+
+            modelBuilder.Entity("congreso.Domain.Entities.MenuRole", b =>
+                {
+                    b.Property<int>("MenuId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("fechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("fechaEliminacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("fechaModificacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("usuarioCreacion")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("usuarioEliminacion")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("usuarioModificacion")
+                        .HasColumnType("int");
+
+                    b.HasKey("MenuId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("MenusRoles");
+                });
+
             modelBuilder.Entity("congreso.Domain.Entities.NivelAcademico", b =>
                 {
                     b.Property<int>("Id")
@@ -466,6 +557,57 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.HasIndex("ActividadId");
 
                     b.ToTable("ObjetivosActividad");
+                });
+
+            modelBuilder.Entity("congreso.Domain.Entities.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("PermissionId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descripcion")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MenuId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("fechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("fechaEliminacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("fechaModificacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("usuarioCreacion")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("usuarioEliminacion")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("usuarioModificacion")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permisos");
                 });
 
             modelBuilder.Entity("congreso.Domain.Entities.Ponente", b =>
@@ -562,6 +704,33 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.ToTable("PonenteTags");
                 });
 
+            modelBuilder.Entity("congreso.Domain.Entities.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ExpiresOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Token")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("congreso.Domain.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -589,6 +758,42 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("congreso.Domain.Entities.RolePermission", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("fechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("fechaEliminacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("fechaModificacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("usuarioCreacion")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("usuarioEliminacion")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("usuarioModificacion")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoleId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("RolesPermisos");
                 });
 
             modelBuilder.Entity("congreso.Domain.Entities.RoleUsuario", b =>
@@ -791,7 +996,7 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("lockOutEnd");
 
-                    b.Property<int>("NivelAcademicoId")
+                    b.Property<int?>("NivelAcademicoId")
                         .HasMaxLength(50)
                         .HasColumnType("int")
                         .HasColumnName("nivelAcademicoId");
@@ -850,7 +1055,7 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .HasColumnType("int")
                         .HasColumnName("tipoIdentificacion");
 
-                    b.Property<int>("TipoParticipanteId")
+                    b.Property<int?>("TipoParticipanteId")
                         .HasColumnType("int")
                         .HasColumnName("tipoParticipante");
 
@@ -1007,6 +1212,25 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("congreso.Domain.Entities.MenuRole", b =>
+                {
+                    b.HasOne("congreso.Domain.Entities.Menu", "Menu")
+                        .WithMany()
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("congreso.Domain.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Menu");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("congreso.Domain.Entities.ObjetivoActividad", b =>
                 {
                     b.HasOne("congreso.Domain.Entities.Actividad", "Actividad")
@@ -1037,6 +1261,36 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.Navigation("Tag");
                 });
 
+            modelBuilder.Entity("congreso.Domain.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("congreso.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("congreso.Domain.Entities.RolePermission", b =>
+                {
+                    b.HasOne("congreso.Domain.Entities.Permission", "Permission")
+                        .WithMany()
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("congreso.Domain.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("congreso.Domain.Entities.RoleUsuario", b =>
                 {
                     b.HasOne("congreso.Domain.Entities.Role", "Role")
@@ -1060,9 +1314,7 @@ namespace congreso.Infrastructure.Persistence.Migrations
                 {
                     b.HasOne("congreso.Domain.Entities.NivelAcademico", "nivelAcademico")
                         .WithMany()
-                        .HasForeignKey("NivelAcademicoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("NivelAcademicoId");
 
                     b.HasOne("congreso.Domain.Entities.School", "School")
                         .WithMany()
@@ -1076,9 +1328,7 @@ namespace congreso.Infrastructure.Persistence.Migrations
 
                     b.HasOne("congreso.Domain.Entities.TipoParticipante", "tipoParticipante")
                         .WithMany()
-                        .HasForeignKey("TipoParticipanteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TipoParticipanteId");
 
                     b.Navigation("School");
 

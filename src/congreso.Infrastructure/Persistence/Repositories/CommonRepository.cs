@@ -56,7 +56,9 @@ namespace congreso.Infrastructure.Persistence.Repositories
         {
             T entity = await GetByIdAsync(id);
 
-            _context.Remove(entity);
+            entity.Estado = (int)TipoEstado.Inactivo;
+
+            _context.Update(entity);
         }
     }
 }

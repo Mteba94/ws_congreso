@@ -16,6 +16,10 @@ namespace congreso.Application.Interfaces.Services
         IGenericRepository<Ponente> Ponente { get; }
         IActividadRepository Actividad { get; }
         ICommonRepository<TipoActividad> TipoActividad { get; }
+        ICommonRepository<RoleUsuario> RoleUsuario { get; }
+        ICommonRepository<Role> Role { get; }
+        IPermisosRepository Permisos { get; }
+        IMenuRepository Menus { get; }
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
         IDbTransaction BeginTransaction();
     }

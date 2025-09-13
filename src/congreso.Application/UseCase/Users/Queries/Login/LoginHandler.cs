@@ -30,7 +30,7 @@ internal sealed class LoginHandler(IUnitOfWork unitOfWork, IJwtTokenGenerator jw
                 response.IsSuccess = false;
                 response.Message = ReplyMessage.MESSAGE_TOKEN_ERROR;
 
-                _fileLogger.Log("ws_congreso", "Login", "1", JsonSerializer.Serialize(response));
+                _fileLogger.Log("ws_congreso", "Login", "1", response);
 
                 return response;
             }
@@ -40,7 +40,7 @@ internal sealed class LoginHandler(IUnitOfWork unitOfWork, IJwtTokenGenerator jw
                 response.IsSuccess = false;
                 response.Message = ReplyMessage.MESSAGE_TOKEN_ERROR;
 
-                _fileLogger.Log("ws_congreso", "Login", "1", JsonSerializer.Serialize(response));
+                _fileLogger.Log("ws_congreso", "Login", "1", response);
 
                 return response;
             }
@@ -50,7 +50,7 @@ internal sealed class LoginHandler(IUnitOfWork unitOfWork, IJwtTokenGenerator jw
                 response.IsSuccess = false;
                 response.Message = ReplyMessage.MESSAGE_BLOCKED;
 
-                _fileLogger.Log("ws_congreso", "Login", "1", JsonSerializer.Serialize(response));
+                _fileLogger.Log("ws_congreso", "Login", "1", response);
 
                 return response;
             }
@@ -60,7 +60,7 @@ internal sealed class LoginHandler(IUnitOfWork unitOfWork, IJwtTokenGenerator jw
                 response.IsSuccess = false;
                 response.Message = ReplyMessage.MESSAGE_EMAIL_NOT_CONFIRMED;
 
-                _fileLogger.Log("ws_congreso", "Login", "1", JsonSerializer.Serialize(response));
+                _fileLogger.Log("ws_congreso", "Login", "1", response);
 
                 return response;
             }
@@ -69,14 +69,14 @@ internal sealed class LoginHandler(IUnitOfWork unitOfWork, IJwtTokenGenerator jw
             response.Data = _jwtTokenGenerator.GenerateToken(user);
             response.Message = ReplyMessage.MESSAGE_TOKEN;
 
-            _fileLogger.Log("ws_congreso", "Login", "1", JsonSerializer.Serialize(response));
+            _fileLogger.Log("ws_congreso", "Login", "1", response);
         }
         catch (Exception ex)
         {
             response.IsSuccess = false;
             response.Message = ex.Message;
 
-            _fileLogger.Log("ws_congreso", "Login", "1", JsonSerializer.Serialize(response), ex.Message);
+            _fileLogger.Log("ws_congreso", "Login", "1", response, ex.Message);
         }
 
         return response;
