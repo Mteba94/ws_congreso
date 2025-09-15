@@ -7,4 +7,6 @@ public interface IMenuRepository
     Task<bool> RegistrarRoleMenus(IEnumerable<MenuRole> menuRoles);
     Task<IEnumerable<MenuRole>> GetMenuRolesByRoleId(int roleId);
     Task<bool> EliminarRoleMenus(IEnumerable<MenuRole> menuRoles);
+    Task<IEnumerable<Menu>> GetMenuPermissionAsync();
+    Task<IEnumerable<Menu>> GetMenuByUserIdAsync(int userId);
 }

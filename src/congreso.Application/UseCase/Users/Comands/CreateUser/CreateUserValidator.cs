@@ -26,9 +26,6 @@ public class CreateUserValidator : AbstractValidator<CreateUserCommand>
         RuleFor(x => x.Sapellido)
             .MaximumLength(50).WithMessage("El segundo apellido no puede exceder los 50 caracteres.");
 
-        RuleFor(x => x.TipoParticipanteId)
-            .GreaterThan(0).WithMessage("El tipo de participante es obligatorio.");
-
         RuleFor(x => x.Email)
             .NotNull().WithMessage("El correo electrónico es obligatorio.")
             .NotEmpty().WithMessage("El correo electrónico no puede estar vacío.")

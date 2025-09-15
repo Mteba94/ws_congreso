@@ -2,6 +2,7 @@
 using congreso.Application.Commons.Bases;
 using congreso.Application.Interfaces.Authentication;
 using congreso.Application.Interfaces.Services;
+using congreso.Domain.Entities;
 using congreso.Utilities.Static;
 using logging.Interface;
 using System.Text.Json;
@@ -66,8 +67,20 @@ internal sealed class LoginHandler(IUnitOfWork unitOfWork, IJwtTokenGenerator jw
             }
 
             response.IsSuccess = true;
-            response.Data = _jwtTokenGenerator.GenerateToken(user);
-            response.Message = ReplyMessage.MESSAGE_TOKEN;
+            response.AccessToken = _jwtTokenGenerator.GenerateToken(user);
+
+            var refreshToken = new RefreshToken
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
+                Token = _jwtTokenGenerator.GenerateRefreshToken(),
+                ExpiresOnUtc = DateTime.UtcNow.AddDays(7)
+            };
+
+            _unitOfWork.RefreshToken.CreateToken(refreshToken);
+            await _unitOfWork.SaveChangesAsync();
+            response.RefreshToken = refreshToken.Token;
+            response.Message = "Token generado correctamente";
 
             _fileLogger.Log("ws_congreso", "Login", "1", response);
         }

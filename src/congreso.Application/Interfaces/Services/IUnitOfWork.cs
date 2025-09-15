@@ -20,6 +20,7 @@ namespace congreso.Application.Interfaces.Services
         ICommonRepository<Role> Role { get; }
         IPermisosRepository Permisos { get; }
         IMenuRepository Menus { get; }
+        IRefreshTokenRepository RefreshToken { get; }
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
         IDbTransaction BeginTransaction();
     }

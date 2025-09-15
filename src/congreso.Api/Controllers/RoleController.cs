@@ -46,7 +46,7 @@ namespace congreso.Api.Controllers
             return response.IsSuccess ? Ok(response) : NotFound(response);
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> RolCreate([FromBody] CreateRoleCommand command)
         {
             var response = await _dispatcher
@@ -55,7 +55,7 @@ namespace congreso.Api.Controllers
             return response.IsSuccess ? Ok(response) : BadRequest(response);
         }
 
-        [HttpPatch]
+        [HttpPut("Update")]
         public async Task<IActionResult> RoleUpdate([FromBody] UpdateRoleCommand command)
         {
             var response = await _dispatcher
@@ -64,7 +64,7 @@ namespace congreso.Api.Controllers
             return response.IsSuccess ? Ok(response) : BadRequest(response);
         }
 
-        [HttpDelete("{roleId:int}")]
+        [HttpPut("Delete/{roleId:int}")]
         public async Task<IActionResult> RoleDelete(int roleId)
         {
             var response = await _dispatcher

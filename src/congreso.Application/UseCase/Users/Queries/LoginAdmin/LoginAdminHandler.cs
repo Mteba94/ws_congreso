@@ -45,23 +45,25 @@ internal sealed class LoginAdminHandler(IUnitOfWork unitOfWork, IJwtTokenGenerat
                 return response;
             }
 
-            if (user.LockoutEnd.HasValue && user.LockoutEnd.Value > DateTime.UtcNow)
+            var userRol = _unitOfWork.RoleUsuario.GetByIdAsync(user.Id);
+
+            if (userRol == null)
             {
                 response.IsSuccess = false;
-                response.Message = ReplyMessage.MESSAGE_BLOCKED;
+                response.Message = ReplyMessage.MESSAGE_TOKEN_ERROR;
 
                 _fileLogger.Log("ws_congreso", "Login", "1", response);
 
                 return response;
             }
 
-            if (user.EmailConfirmed == false)
+            if (!userRol.Equals("Administrador"))
             {
                 response.IsSuccess = false;
-                response.Message = ReplyMessage.MESSAGE_EMAIL_NOT_CONFIRMED;
+                response.Message = ReplyMessage.MESSAGE_TOKEN_ERROR;
 
                 _fileLogger.Log("ws_congreso", "Login", "1", response);
-
+                
                 return response;
             }
 

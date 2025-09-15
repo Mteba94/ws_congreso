@@ -38,4 +38,25 @@ public class PermisosRepository(ApplicationDbContext context) : IPermisosReposit
         var recordsAffected = await _context.SaveChangesAsync();
         return recordsAffected > 0;
     }
+
+    public async Task<IEnumerable<Permission>> GetPermissionsByMenuId(int menuId)
+    {
+        var menuPermissions = await _context.Permisos
+                .AsNoTracking()
+                .Where(x => x.MenuId == menuId)
+                .ToListAsync();
+
+        return menuPermissions;
+    }
+
+    public async Task<IEnumerable<Permission>> GetRolePermissionsByMenuId(int roleId, int menuId)
+    {
+        var rolePermissions = _context.RolesPermisos
+                .Where(pr => pr.RoleId == roleId && pr.Permission.MenuId == menuId)
+                .Select(pr => pr.Permission);
+
+        var data = await rolePermissions.ToListAsync();
+
+        return rolePermissions;
+    }
 }

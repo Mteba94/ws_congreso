@@ -23,7 +23,9 @@ internal sealed class GetAllUserHandler(IUnitOfWork unitOfWork, IOrderingQuery o
         {
             _fileLogger.Log("ws_congreso", "GetAllUser", "0", query);
 
-            var users = _unitOfWork.User.GetAllQueryable();
+            var users = _unitOfWork.User
+                .GetAllQueryable()
+                .Where(u => u.TipoParticipanteId == null);
 
             if (query.NumFilter is not null && !string.IsNullOrEmpty(query.TextFilter))
             {

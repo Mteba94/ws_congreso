@@ -1,21 +1,21 @@
 ﻿using congreso.Application.Interfaces.Authentication;
+using congreso.Application.Interfaces.ExternalWS;
 using congreso.Application.Interfaces.Persistence;
 using congreso.Application.Interfaces.Services;
 using congreso.Infrastructure.Authentication;
+using congreso.Infrastructure.ExternalServices.Service;
 using congreso.Infrastructure.Persistence.Context;
 using congreso.Infrastructure.Persistence.Repositories;
 using congreso.Infrastructure.Services;
+using logging.Interface;
+using logging.Model;
+using logging.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using TallerIdentity.Infrastructure.Authentication;
-using Microsoft.Extensions.Configuration;
-
-using congreso.Infrastructure.ExternalServices.Service;
-using congreso.Application.Interfaces.ExternalWS;
-using logging.Interface;
-using logging.Service;
-using logging.Model;
 
 namespace congreso.Infrastructure;
 
@@ -61,6 +61,9 @@ public static class DependencyInjection
 
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+        services.AddScoped<IPermissionService, PermissionService>();
 
         return services;
     }
