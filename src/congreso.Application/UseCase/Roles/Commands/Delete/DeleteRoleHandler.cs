@@ -12,6 +12,7 @@ internal sealed class DeleteRoleHandler(IUnitOfWork unitOfWork) : ICommandHandle
     public async Task<BaseResponse<bool>> Handle(DeleteRoleCommand command, CancellationToken cancellationToken)
     {
         var response = new BaseResponse<bool>();
+        using var transaction = _unitOfWork.BeginTransaction();
 
         try
         {
@@ -25,13 +26,19 @@ internal sealed class DeleteRoleHandler(IUnitOfWork unitOfWork) : ICommandHandle
             }
 
             await _unitOfWork.Role.DeleteAsync(command.RoleId);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            await _unitOfWork.Permisos.EliminarRolePermisosByRoleId(command.RoleId);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            transaction.Commit();
 
             response.IsSuccess = true;
             response.Message = ReplyMessage.MESSAGE_DELETE;
         }
         catch (Exception ex)
         {
+            transaction.Rollback();
             response.IsSuccess = false;
             response.Message = ReplyMessage.MESSAGE_FAILED;
         }

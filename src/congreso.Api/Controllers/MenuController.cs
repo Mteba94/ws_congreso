@@ -18,6 +18,7 @@ namespace congreso.Api.Controllers
         public async Task<IActionResult> GetMenuByUserId()
         {
             var userId = _httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
             var response = await _dispatcher.Dispatch<GetMenuByUserIdQuery, IEnumerable<MenuResponseDto>>
                 (new GetMenuByUserIdQuery() { UserId = int.Parse(userId!) }, CancellationToken.None);
 

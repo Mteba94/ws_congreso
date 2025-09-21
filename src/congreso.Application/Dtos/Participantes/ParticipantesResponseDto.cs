@@ -21,7 +21,7 @@ public class ParticipantesResponseDto
 
 public class ParticipanteByIdResponseDto
 {
-    public int UserId { get; set; }
+    public int ParticipanteId { get; set; }
     public string Pnombre { get; set; } = null!;
     public string? Snombre { get; set; }
     public string Papellido { get; set; } = null!;

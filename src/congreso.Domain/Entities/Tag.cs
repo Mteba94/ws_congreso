@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace congreso.Domain.Entities
 {
-    public class Tag
+    public class Tag : CatalogoEntity
     {
-        public int Id { get; set; }
         public string Nombre { get; set; } = null!;
-        public int Estado { get; set; }
     }
 }

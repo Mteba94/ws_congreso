@@ -10,6 +10,7 @@ using congreso.Application.UseCase.TiposParticipante.Queries.GetById;
 using congreso.Application.UseCase.TiposParticipante.Queries.GetTipoParticipanteSelect;
 using congreso.Application.UseCase.Users.Comands.UpdateUser;
 using congreso.Application.UseCase.Users.Queries.GetById;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace congreso.Api.Controllers
@@ -19,7 +20,7 @@ namespace congreso.Api.Controllers
     public class TipoParticipanteController(IDispatcher dispatcher) : ControllerBase
     {
         private readonly IDispatcher _dispatcher = dispatcher;
-
+        [Authorize(Policy = "LISTADO DE TIPOS DE PARTICIPANTE")]
         [HttpGet]
         public async Task<IActionResult> TipoParticipanteList([FromQuery] GetAllTipoParticipanteQuery query)
         {
@@ -46,7 +47,7 @@ namespace congreso.Api.Controllers
             return response.IsSuccess ? Ok(response) : BadRequest(response);
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateTipoParticipante([FromBody] CreateTipoParticipanteCommand command)
         {
             var response = await _dispatcher
@@ -55,7 +56,7 @@ namespace congreso.Api.Controllers
             return response.IsSuccess ? Ok(response) : BadRequest(response);
         }
 
-        [HttpPut]
+        [HttpPut("Update")]
         public async Task<IActionResult> UpdateTipoParticipante([FromBody] UpdateTipoParticipanteCommand command)
         {
             var response = await _dispatcher

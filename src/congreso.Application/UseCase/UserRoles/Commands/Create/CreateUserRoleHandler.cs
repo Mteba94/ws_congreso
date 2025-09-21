@@ -4,7 +4,6 @@ using congreso.Application.Interfaces.Services;
 using congreso.Domain.Entities;
 using congreso.Utilities.Static;
 using Mapster;
-using System.Windows.Input;
 
 namespace congreso.Application.UseCase.UserRoles.Commands.Create;
 

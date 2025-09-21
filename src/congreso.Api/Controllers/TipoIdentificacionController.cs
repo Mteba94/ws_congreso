@@ -46,7 +46,7 @@ namespace congreso.Api.Controllers
             return response.IsSuccess ? Ok(response) : BadRequest(response);
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateTipoIdentificacion([FromBody] CreateTipoIdentCommand command)
         {
             var response = await _dispatcher
@@ -55,7 +55,7 @@ namespace congreso.Api.Controllers
             return response.IsSuccess ? Ok(response) : BadRequest(response);
         }
 
-        [HttpPut]
+        [HttpPut("Update")]
         public async Task<IActionResult> UpdateTipoIdentificacion([FromBody] UpdateTipoIdentCommand command)
         {
             var response = await _dispatcher

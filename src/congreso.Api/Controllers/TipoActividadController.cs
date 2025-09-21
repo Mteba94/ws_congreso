@@ -1,8 +1,13 @@
 ﻿using congreso.Application.Abstractions.Messaging;
 using congreso.Application.Dtos.Commons;
+using congreso.Application.Dtos.TiposActividad;
+using congreso.Application.Dtos.User;
+using congreso.Application.UseCase.Actividades.Queries.GetAll;
 using congreso.Application.UseCase.Schools.Queries.SelectSchool;
 using congreso.Application.UseCase.TiposActividad.Commands.Create;
+using congreso.Application.UseCase.TiposActividad.Queries.GetAll;
 using congreso.Application.UseCase.TiposActividad.Queries.Select;
+using congreso.Application.UseCase.Users.Queries.GetAllUser;
 using Microsoft.AspNetCore.Mvc;
 
 namespace congreso.Api.Controllers
@@ -13,6 +18,15 @@ namespace congreso.Api.Controllers
     {
         private readonly IDispatcher _dispatcher = dispatcher;
 
+        [HttpGet]
+        public async Task<IActionResult> TipoActividadList([FromQuery] GetAllTipoActividadQuery query)
+        {
+            var response = await _dispatcher
+                .Dispatch<GetAllTipoActividadQuery, IEnumerable<TipoActividadResponseDto>>(query, CancellationToken.None);
+
+            return response.IsSuccess ? Ok(response) : BadRequest(response);
+        }
+
         [HttpGet("Select")]
         public async Task<IActionResult> TipoActividadSelect()
         {
@@ -22,7 +36,7 @@ namespace congreso.Api.Controllers
             return response.IsSuccess ? Ok(response) : BadRequest(response);
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateTipoActividad([FromBody] CreateTipoActividadCommand command)
         {
             var response = await _dispatcher

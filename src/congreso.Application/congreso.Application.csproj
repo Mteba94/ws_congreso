@@ -23,10 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UseCase\Actividades\Commands\" />
+    <Folder Include="UseCase\Actividades\Commands\Create\" />
     <Folder Include="UseCase\Actividades\Queries\GetById\" />
-    <Folder Include="UseCase\Congresos\Commands\" />
-    <Folder Include="UseCase\NivelesDificultad\Queries\" />
+    <Folder Include="UseCase\Congresos\Commands\Delete\" />
+    <Folder Include="UseCase\PonenteTags\Commands\" />
     <Folder Include="UseCase\TiposIdentificacion\Commands\DeleteTipoIdent\" />
   </ItemGroup>
 

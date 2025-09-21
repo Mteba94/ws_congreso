@@ -48,7 +48,7 @@ internal sealed class DeleteUserHandler(IUnitOfWork unitOfWork, IFileLogger file
         catch (Exception ex)
         {
             response.IsSuccess = false;
-            response.Message = ex.Message;
+            response.Message = ReplyMessage.MESSAGE_FAILED;
 
             _fileLogger.Log("ws_congreso", "DeleteUser", "1", response, ex.Message);
         }

@@ -2,13 +2,15 @@
 using congreso.Domain.Entities;
 using congreso.Infrastructure.Persistence.Context;
 using congreso.Utilities.Static;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace congreso.Infrastructure.Persistence.Repositories;
 
-public class UserRepository(ApplicationDbContext context) : GenericRepository<User>(context), IUserRepository
+public class UserRepository(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor) : GenericRepository<User>(context, httpContextAccessor), IUserRepository
 {
     private readonly ApplicationDbContext _context = context;
+    private readonly HttpContext _httpContextAccessor = httpContextAccessor.HttpContext;
 
     public async Task<User> UserByEmailAsync(string email)
     {

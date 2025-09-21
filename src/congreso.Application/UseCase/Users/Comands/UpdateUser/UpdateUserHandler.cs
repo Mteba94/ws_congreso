@@ -1,12 +1,9 @@
 ﻿using congreso.Application.Abstractions.Messaging;
 using congreso.Application.Commons.Bases;
 using congreso.Application.Interfaces.Services;
-using congreso.Domain.Entities;
 using congreso.Utilities.Static;
 using logging.Interface;
-using logging.Service;
 using Mapster;
-using System.Text.Json;
 using BC = BCrypt.Net.BCrypt;
 
 namespace congreso.Application.UseCase.Users.Comands.UpdateUser;

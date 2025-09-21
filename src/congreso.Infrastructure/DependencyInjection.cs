@@ -59,6 +59,9 @@ public static class DependencyInjection
             });
         });
 
+        services.AddTransient<IExcelService, ExcelService>();
+        services.AddTransient<IPdfService, PdfService>();
+
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();

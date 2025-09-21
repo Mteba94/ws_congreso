@@ -12,13 +12,13 @@ namespace congreso.Infrastructure.Persistence.Repositories
     {
         private readonly ApplicationDbContext _context;
         private readonly DbSet<T> _entity;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly HttpContext _httpContextAccessor;
 
-        public GenericRepository(ApplicationDbContext context)
+        public GenericRepository(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _entity = _context.Set<T>();
-            //_httpContextAccessor = httpContextAccessor;
+            _httpContextAccessor = httpContextAccessor.HttpContext;
         }
 
         public IQueryable<T> GetAllQueryable()
@@ -40,7 +40,26 @@ namespace congreso.Infrastructure.Persistence.Repositories
         }
         public async Task CreateAsync(T entity)
         {
-            entity.usuarioCreacion = 1;
+            var userIdString = _httpContextAccessor.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            int userId;
+
+            if (entity is User userEntity && userEntity.TipoParticipanteId != null)
+            {
+                if (string.IsNullOrEmpty(userIdString))
+                {
+                    userId = 1;
+                }
+                else
+                {
+                    userId = int.Parse(userIdString);
+                }
+            }
+            else
+            {
+                userId = int.Parse(userIdString!);
+            }
+
+            entity.usuarioCreacion = userId;
             entity.fechaCreacion = DateTime.UtcNow;
             entity.Estado = (int)TipoEstado.Activo;
 
@@ -48,14 +67,38 @@ namespace congreso.Infrastructure.Persistence.Repositories
         }
         public void Update(T entity)
         {
-            //entity.usuarioModificacion = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-            entity.fechaCreacion = DateTime.UtcNow;
+            var userIdString = _httpContextAccessor.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            int userId;
+
+            if (entity is User userEntity && userEntity.TipoParticipanteId != null)
+            {
+                if (string.IsNullOrEmpty(userIdString))
+                {
+                    userId = 1;
+                }
+                else
+                {
+                    userId = int.Parse(userIdString);
+                }
+            }
+            else
+            {
+                userId = int.Parse(userIdString!);
+            }
+
+            entity.fechaModificacion = DateTime.UtcNow;
+            entity.usuarioModificacion = userId;
 
             _context.Update(entity);
         }
         public async Task DeleteAsync(int id)
         {
+            var userId = _httpContextAccessor.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
             T entity = await GetByIdAsync(id);
+
+            entity.fechaEliminacion = DateTime.UtcNow;
+            entity.usuarioEliminacion = int.Parse(userId!);
 
             entity.Estado = (int)TipoEstado.Inactivo;
 

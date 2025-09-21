@@ -25,6 +25,11 @@ namespace congreso.Infrastructure.Services
         public IPermisosRepository Permisos { get; }
         public IMenuRepository Menus { get; }
         public IRefreshTokenRepository RefreshToken { get; }
+        public ICommonRepository<NivelDificultad> NivelDificultad { get; }
+        public ICommonRepository<Tag> Tag { get; }
+
+        public IPonenteTagRepository PonenteTag { get; }
+
         public UnitOfWork(
             ApplicationDbContext context,
             IGenericRepository<Congreso> CongresoRepository,
@@ -41,7 +46,10 @@ namespace congreso.Infrastructure.Services
             ICommonRepository<Role> role,
             IPermisosRepository permisos,
             IMenuRepository menus,
-            IRefreshTokenRepository refreshToken)
+            IRefreshTokenRepository refreshToken,
+            ICommonRepository<NivelDificultad> nivelDificultad,
+            ICommonRepository<Tag> tag,
+            IPonenteTagRepository ponenteTag)
         {
             _context = context;
             Congreso = CongresoRepository;
@@ -59,6 +67,9 @@ namespace congreso.Infrastructure.Services
             Permisos = permisos;
             Menus = menus;
             RefreshToken = refreshToken;
+            NivelDificultad = nivelDificultad;
+            Tag = tag;
+            PonenteTag = ponenteTag;
         }
 
         public IDbTransaction BeginTransaction() => 

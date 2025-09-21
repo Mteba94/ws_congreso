@@ -53,7 +53,7 @@ internal sealed class CreateUserHandler(IUnitOfWork unitOfWork, HandlerExecutor 
         catch (Exception ex)
         {
             response.IsSuccess = false;
-            response.Message = ex.Message;
+            response.Message = ReplyMessage.MESSAGE_FAILED;
 
             _fileLogger.Log("ws_congreso", "CreateUser", "1", response, ex.Message);
         }

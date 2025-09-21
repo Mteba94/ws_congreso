@@ -1,4 +1,5 @@
-﻿using congreso.Application.Dtos.User;
+﻿using congreso.Application.Dtos.Commons;
+using congreso.Application.Dtos.User;
 using congreso.Application.UseCase.Users.Comands.CreateUser;
 using congreso.Domain.Entities;
 using congreso.Utilities.Static;
@@ -9,7 +10,6 @@ public class UserMapping : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        //config.Default.NameMatchingStrategy(NameMatchingStrategy.Flexible);
 
         config.NewConfig<User, UserResponseDto>()
             .Map(dest => dest.UserId, src => src.Id)
@@ -22,6 +22,11 @@ public class UserMapping : IRegister
             .TwoWays();
 
         config.NewConfig<CreateUserCommand, User>();
+
+        config.NewConfig<User, SelectResponseDto>()
+          .Map(dest => dest.Id, src => src.Id)
+          .Map(dest => dest.Nombre, src => src.Pnombre + " " + src.Snombre + " " + src.Papellido + " " + src.Sapellido)
+          .TwoWays();
     }
 
 

@@ -33,7 +33,7 @@ namespace congreso.Api.Controllers
             return response.IsSuccess ? Ok(response) : BadRequest(response);
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> UserRoleCreate([FromBody] CreateUserRoleCommand command)
         {
             var response = await _dispatcher.Dispatch<CreateUserRoleCommand, bool>
@@ -41,7 +41,7 @@ namespace congreso.Api.Controllers
             return response.IsSuccess ? Ok(response) : BadRequest(response);
         }
 
-        [HttpPut]
+        [HttpPut("Update")]
         public async Task<IActionResult> UserRoleUpdate([FromBody] UpdateUserRoleCommand command)
         {
             var response = await _dispatcher.Dispatch<UpdateUserRoleCommand, bool>
@@ -49,7 +49,7 @@ namespace congreso.Api.Controllers
             return response.IsSuccess ? Ok(response) : BadRequest(response);
         }
 
-        [HttpDelete("{userRoleId:int}")]
+        [HttpPut("Delete/{userRoleId:int}")]
         public async Task<IActionResult> UserRoleDelete(int userRoleId)
         {
             var response = await _dispatcher.Dispatch<DeleteUserRoleCommand, bool>

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using congreso.Application.Abstractions.Messaging;
 
-namespace congreso.Application.UseCase.NivelesDificultad.Commands.Create
+namespace congreso.Application.UseCase.NivelesDificultad.Commands.Create;
+
+public sealed class CreateNivelDificultadCommand : ICommand<bool>
 {
-    internal class CreateNivelDificultadCommand
-    {
-    }
+    public string Nombre { get; set; } = null!;
+    public string? Descripcion { get; set; }
 }

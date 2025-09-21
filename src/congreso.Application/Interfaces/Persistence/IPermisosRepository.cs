@@ -9,4 +9,5 @@ public interface IPermisosRepository
     Task<IEnumerable<Permission>> GetRolePermissionsByMenuId(int roleId, int menuId);
     Task<IEnumerable<RolePermission>> GetPermisosRolesByRoleId(int roleId);
     Task<bool> EliminarRolePermisos(IEnumerable<RolePermission> rolePermissions);
+    Task<bool> EliminarRolePermisosByRoleId(int roleId);
 }

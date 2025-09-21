@@ -2,10 +2,10 @@
 using congreso.Application.Commons.Bases;
 using congreso.Application.Dtos.User;
 using congreso.Application.Interfaces.Services;
+using congreso.Domain.Entities;
 using congreso.Utilities.Static;
 using logging.Interface;
 using Mapster;
-using System.Text.Json;
 
 namespace congreso.Application.UseCase.Users.Queries.GetById;
 
@@ -24,7 +24,7 @@ internal sealed class GetByIdUserHandler(IUnitOfWork unitOfWork, IFileLogger fil
 
             var user = await _unitOfWork.User.GetByIdAsync(query.UserId);
 
-            if (user is null)
+            if (user is null || user.TipoParticipanteId != null)
             {
                 response.IsSuccess = false;
                 response.Message = ReplyMessage.MESSAGE_QUERY_EMPTY;

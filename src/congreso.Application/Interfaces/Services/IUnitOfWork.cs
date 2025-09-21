@@ -21,6 +21,10 @@ namespace congreso.Application.Interfaces.Services
         IPermisosRepository Permisos { get; }
         IMenuRepository Menus { get; }
         IRefreshTokenRepository RefreshToken { get; }
+        ICommonRepository<NivelDificultad> NivelDificultad { get; }
+        ICommonRepository<Tag> Tag { get; }
+        //ICommonRepository<PonenteTag> PonenteTag { get; }
+        IPonenteTagRepository PonenteTag { get; }
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
         IDbTransaction BeginTransaction();
     }
