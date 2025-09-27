@@ -13,7 +13,6 @@ namespace congreso.Application.Interfaces.Services
         ICodigoRepository CodigoVerificacion { get; }
         ICommonRepository<NivelAcademico> NivelAcademico { get; }
         ICommonRepository<School> School { get; }
-        IGenericRepository<Ponente> Ponente { get; }
         IActividadRepository Actividad { get; }
         ICommonRepository<TipoActividad> TipoActividad { get; }
         ICommonRepository<RoleUsuario> RoleUsuario { get; }
@@ -23,8 +22,11 @@ namespace congreso.Application.Interfaces.Services
         IRefreshTokenRepository RefreshToken { get; }
         ICommonRepository<NivelDificultad> NivelDificultad { get; }
         ICommonRepository<Tag> Tag { get; }
-        //ICommonRepository<PonenteTag> PonenteTag { get; }
         IPonenteTagRepository PonenteTag { get; }
+        IPonenteRepository Ponente { get; }
+        IObjetivoActividadRepository ObjetivoActividad { get; }
+        ICommonRepository<ActividadPonente> ActividadPonente { get; }
+        IMaterialActividadRepository MaterialActividad { get; }
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
         IDbTransaction BeginTransaction();
     }

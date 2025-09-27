@@ -11,6 +11,11 @@ public class ActividadRepository(ApplicationDbContext context, IHttpContextAcces
     private readonly ApplicationDbContext _context = context;
     private readonly HttpContext _httpContextAccessor = httpContextAccessor.HttpContext;
 
+    public Task<Actividad> ActividadDestacada()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<Actividad> ActivitiesByUser(string userId)
     {
         var activivad = await _context.Actividades

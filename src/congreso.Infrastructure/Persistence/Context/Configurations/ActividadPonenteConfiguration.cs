@@ -13,9 +13,9 @@ namespace congreso.Infrastructure.Persistence.Context.Configurations
     {
         public void Configure(EntityTypeBuilder<ActividadPonente> builder)
         {
-            builder.HasKey(ap => ap.id);
+            builder.HasKey(ap => ap.Id);
 
-            builder.Property(ap => ap.id)
+            builder.Property(ap => ap.Id)
                 .HasColumnName("idActividadPonente")
                 .IsRequired();
         }

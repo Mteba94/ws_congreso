@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using congreso.Infrastructure.Persistence.Context;
 
@@ -11,9 +12,11 @@ using congreso.Infrastructure.Persistence.Context;
 namespace congreso.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250924043906_ImagenActividad")]
+    partial class ImagenActividad
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,10 +51,6 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("Descripcion");
-
-                    b.Property<string>("DescripcionTotal")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Estado")
                         .HasColumnType("int");
@@ -389,32 +388,6 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Inscripciones");
-                });
-
-            modelBuilder.Entity("congreso.Domain.Entities.MaterialActividad", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("MaterialId");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ActividadId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Estado")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MaterialDesc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ActividadId");
-
-                    b.ToTable("MaterialesActividad");
                 });
 
             modelBuilder.Entity("congreso.Domain.Entities.Menu", b =>
@@ -1243,17 +1216,6 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.Navigation("Actividad");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("congreso.Domain.Entities.MaterialActividad", b =>
-                {
-                    b.HasOne("congreso.Domain.Entities.Actividad", "Actividad")
-                        .WithMany()
-                        .HasForeignKey("ActividadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Actividad");
                 });
 
             modelBuilder.Entity("congreso.Domain.Entities.MenuRole", b =>

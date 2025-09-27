@@ -6,6 +6,7 @@ public class ActividadResponseDto
     public int CongresoId { get; set; }
     public string Titulo { get; set; } = null!;
     public string Descripcion { get; set; } = null!;
+    public string DescripcionTotal { get; set; } = null!;
     public int TipoActividadId { get; set; }
     public DateTime FechaActividad { get; set; }
     public DateTime HoraInicio { get; set; }
@@ -15,6 +16,7 @@ public class ActividadResponseDto
     public string? Ubicacion { get; set; }
     public string? RequisitosPrevios { get; set; }
     public int NivelDificultadId { get; set; }
+    public string? Imagen { get; set; }
     public int Estado { get; set; }
     public string? EstadoDescripcion { get; set; }
 }

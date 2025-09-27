@@ -17,7 +17,6 @@ namespace congreso.Infrastructure.Services
         public ICodigoRepository CodigoVerificacion { get; }
         public ICommonRepository<NivelAcademico> NivelAcademico { get; }
         public ICommonRepository<School> School { get; }
-        public IGenericRepository<Ponente> Ponente { get; }
         public IActividadRepository Actividad { get; }
         public ICommonRepository<TipoActividad> TipoActividad { get; }
         public ICommonRepository<RoleUsuario> RoleUsuario { get; }
@@ -27,8 +26,11 @@ namespace congreso.Infrastructure.Services
         public IRefreshTokenRepository RefreshToken { get; }
         public ICommonRepository<NivelDificultad> NivelDificultad { get; }
         public ICommonRepository<Tag> Tag { get; }
-
         public IPonenteTagRepository PonenteTag { get; }
+        public IPonenteRepository Ponente { get; }
+        public IObjetivoActividadRepository ObjetivoActividad { get; }
+        public ICommonRepository<ActividadPonente> ActividadPonente { get; }
+        public IMaterialActividadRepository MaterialActividad { get; }
 
         public UnitOfWork(
             ApplicationDbContext context,
@@ -39,7 +41,6 @@ namespace congreso.Infrastructure.Services
             ICodigoRepository codigoVerificacion,
             ICommonRepository<NivelAcademico> nivelAcademico,
             ICommonRepository<School> school,
-            IGenericRepository<Ponente> ponente,
             IActividadRepository actividad,
             ICommonRepository<TipoActividad> tipoActividad,
             ICommonRepository<RoleUsuario> roleUsuario,
@@ -49,7 +50,11 @@ namespace congreso.Infrastructure.Services
             IRefreshTokenRepository refreshToken,
             ICommonRepository<NivelDificultad> nivelDificultad,
             ICommonRepository<Tag> tag,
-            IPonenteTagRepository ponenteTag)
+            IPonenteTagRepository ponenteTag,
+            IPonenteRepository ponente,
+            IObjetivoActividadRepository objetivoActividad,
+            ICommonRepository<ActividadPonente> actividadPonente,
+            IMaterialActividadRepository materialActividad)
         {
             _context = context;
             Congreso = CongresoRepository;
@@ -59,7 +64,6 @@ namespace congreso.Infrastructure.Services
             CodigoVerificacion = codigoVerificacion;
             NivelAcademico = nivelAcademico;
             School = school;
-            Ponente = ponente;
             Actividad = actividad;
             TipoActividad = tipoActividad;
             RoleUsuario = roleUsuario;
@@ -70,6 +74,10 @@ namespace congreso.Infrastructure.Services
             NivelDificultad = nivelDificultad;
             Tag = tag;
             PonenteTag = ponenteTag;
+            Ponente = ponente;
+            ObjetivoActividad = objetivoActividad;
+            ActividadPonente = actividadPonente;
+            MaterialActividad = materialActividad;
         }
 
         public IDbTransaction BeginTransaction() => 

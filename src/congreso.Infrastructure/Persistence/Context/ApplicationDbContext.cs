@@ -36,6 +36,7 @@ namespace congreso.Infrastructure.Persistence.Context
         public DbSet<Menu> Menus { get; set; } = null!;
         public DbSet<RolePermission> RolesPermisos { get; set; } = null!;
         public DbSet<Permission> Permisos { get; set; } = null!;
+        public DbSet<MaterialActividad> MaterialesActividad { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

@@ -11,6 +11,7 @@ using congreso.Application.UseCase.Ponentes.Commands.Delete;
 using congreso.Application.UseCase.Ponentes.Commands.Update;
 using congreso.Application.UseCase.Ponentes.Queries.GetAll;
 using congreso.Application.UseCase.Ponentes.Queries.GetById;
+using congreso.Application.UseCase.Ponentes.Queries.GetPopular;
 using congreso.Application.UseCase.Ponentes.Queries.GetSelect;
 using Microsoft.AspNetCore.Mvc;
 
@@ -75,6 +76,16 @@ namespace congreso.Api.Controllers
                 .Dispatch<DeletePonenteCommand, bool>(new DeletePonenteCommand { PonenteId = ponenteId }, CancellationToken.None);
 
             return response.IsSuccess ? Ok(response) : BadRequest(response);
+        }
+
+        [HttpGet("Popular")]
+        public async Task<IActionResult> PonentePopular()
+        {
+            var response = await _dispatcher
+              .Dispatch<GetPopularPonenteQuery, IEnumerable<PonenteResponseDto>>
+              (new GetPopularPonenteQuery(), CancellationToken.None);
+
+            return Ok(response);
         }
     }
 }
