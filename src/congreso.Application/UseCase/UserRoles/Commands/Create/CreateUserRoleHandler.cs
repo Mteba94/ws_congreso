@@ -17,6 +17,9 @@ public class CreateUserRoleHandler(IUnitOfWork unitOfWork) : ICommandHandler<Cre
         try
         {
             var userRole = command.Adapt<RoleUsuario>();
+
+            userRole.Estado = (int)TipoEstado.Activo;
+
             await _unitOfWork.RoleUsuario.CreateAsync(userRole);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 

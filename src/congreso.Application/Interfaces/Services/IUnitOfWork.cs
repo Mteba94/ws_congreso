@@ -28,6 +28,7 @@ namespace congreso.Application.Interfaces.Services
         IObjetivoActividadRepository ObjetivoActividad { get; }
         ICommonRepository<ActividadPonente> ActividadPonente { get; }
         IMaterialActividadRepository MaterialActividad { get; }
+        IInscripcionRepository Inscripcion { get; }
         IAzureStorage azureStorage { get; }
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
         IDbTransaction BeginTransaction();

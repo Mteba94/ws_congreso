@@ -33,6 +33,7 @@ namespace congreso.Infrastructure.Services
         public ICommonRepository<ActividadPonente> ActividadPonente { get; }
         public IMaterialActividadRepository MaterialActividad { get; }
         public IAzureStorage azureStorage { get; }
+        public IInscripcionRepository Inscripcion { get; }
 
         public UnitOfWork(
             ApplicationDbContext context,
@@ -57,7 +58,8 @@ namespace congreso.Infrastructure.Services
             IObjetivoActividadRepository objetivoActividad,
             ICommonRepository<ActividadPonente> actividadPonente,
             IMaterialActividadRepository materialActividad,
-            IAzureStorage azureStorage)
+            IAzureStorage azureStorage,
+            IInscripcionRepository inscripcion)
         {
             _context = context;
             Congreso = CongresoRepository;
@@ -82,6 +84,7 @@ namespace congreso.Infrastructure.Services
             ActividadPonente = actividadPonente;
             MaterialActividad = materialActividad;
             this.azureStorage = azureStorage;
+            Inscripcion = inscripcion;
         }
 
         public IDbTransaction BeginTransaction() => 

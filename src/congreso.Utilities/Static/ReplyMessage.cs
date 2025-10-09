@@ -23,6 +23,6 @@
         public const string MESSAGE_CANCEL = "La venta ha sido anulada correctamente.";
         public const string MESSAGE_CODE_ERROR = "El código de verificación es incorrecto.";
 
-
+        public const string MESSAGE_NO_QUOTA = "No hay cupo disponible para esta actividad.";
     }
 }

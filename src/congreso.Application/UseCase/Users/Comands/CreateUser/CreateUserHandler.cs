@@ -2,6 +2,7 @@
 using congreso.Application.Commons.Bases;
 using congreso.Application.Interfaces.ExternalWS;
 using congreso.Application.Interfaces.Services;
+using congreso.Application.UseCase.UserRoles.Commands.Create;
 using congreso.Domain.Entities;
 using congreso.Utilities.Static;
 using logging.Interface;
@@ -25,6 +26,7 @@ internal sealed class CreateUserHandler(IUnitOfWork unitOfWork, HandlerExecutor 
     private async Task<BaseResponse<bool>> CreateUserAsync(CreateUserCommand command, CancellationToken cancellationToken)
     {
         var response = new BaseResponse<bool>();
+        using var transaction = _unitOfWork.BeginTransaction();
 
         try
         {
@@ -45,6 +47,18 @@ internal sealed class CreateUserHandler(IUnitOfWork unitOfWork, HandlerExecutor 
             await _unitOfWork.User.CreateAsync(user);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
+            var roleUser = new RoleUsuario
+            {
+                RoleId = 3,
+                UserId = user.Id,
+                Estado = (int)TipoEstado.Activo
+            };
+
+            await _unitOfWork.RoleUsuario.CreateAsync(roleUser);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            transaction.Commit();
+
             response.IsSuccess = true;
             response.Message = ReplyMessage.MESSAGE_SAVE;
 
@@ -52,6 +66,7 @@ internal sealed class CreateUserHandler(IUnitOfWork unitOfWork, HandlerExecutor 
         }
         catch (Exception ex)
         {
+            transaction.Rollback();
             response.IsSuccess = false;
             response.Message = ReplyMessage.MESSAGE_FAILED;
 
