@@ -9,6 +9,7 @@ namespace congreso.Utilities.Static
     public enum TipoEstado
     {
         Inactivo = 0,
-        Activo = 1
+        Activo = 1,
+        Pendiente = 2,
     }
 }

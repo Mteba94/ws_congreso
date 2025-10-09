@@ -1,5 +1,7 @@
 ﻿using congreso.Application.Abstractions.Messaging;
+using congreso.Application.UseCase.NivelesDificultad.Commands.Update;
 using congreso.Application.UseCase.Users.Comands.LoginRefreshTokenCommand;
+using congreso.Application.UseCase.Users.Comands.RecoveryPass;
 using congreso.Application.UseCase.Users.Comands.RevokeRefreshTokenCommand;
 using congreso.Application.UseCase.Users.Queries.Login;
 using congreso.Application.UseCase.Users.Queries.LoginAdmin;
@@ -60,7 +62,7 @@ public class AuthController(IDispatcher dispatcher, IHttpContextAccessor httpCon
 
         var response = await _dispatcher.Dispatch<LoginRefreshTokenCommand, string>(command, CancellationToken.None);
 
-        if(response.IsSuccess)
+        if (response.IsSuccess)
         {
             var cookieOptions = new CookieOptions
             {
@@ -97,6 +99,15 @@ public class AuthController(IDispatcher dispatcher, IHttpContextAccessor httpCon
 
         _httpContextAccessor.HttpContext.Response.Cookies.Delete("rt");
 
+
+        return response.IsSuccess ? Ok(response) : BadRequest(response);
+    }
+
+    [HttpPut("RecoveryPass")]
+    public async Task<IActionResult> UpdatePassword([FromBody] RecoveryPassUserCommand command)
+    {
+        var response = await _dispatcher
+                .Dispatch<RecoveryPassUserCommand, bool>(command, CancellationToken.None);
 
         return response.IsSuccess ? Ok(response) : BadRequest(response);
     }

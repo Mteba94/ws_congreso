@@ -7,7 +7,6 @@ using congreso.Utilities.Static;
 using logging.Interface;
 using Mapster;
 using System.Security.Cryptography;
-using System.Text.Json;
 using BC = BCrypt.Net.BCrypt;
 
 namespace congreso.Application.UseCase.CodigosVerificacion.Commands.CreateCodigo
@@ -59,7 +58,10 @@ namespace congreso.Application.UseCase.CodigosVerificacion.Commands.CreateCodigo
                 codigo.UserId = user.Id;
                 codigo.Codigo = codeHash;
                 codigo.FechaCreacion = DateTime.UtcNow;
-                codigo.FechaExpiracion = DateTime.UtcNow.AddMinutes(1);
+
+                int time = 1;
+
+                codigo.FechaExpiracion = DateTime.UtcNow.AddMinutes(time);
                 codigo.Estado = (int)TipoEstado.Activo;
 
                 await _unitOfWork.CodigoVerificacion.CreateAsync(codigo);

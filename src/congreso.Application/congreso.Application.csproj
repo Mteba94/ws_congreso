@@ -11,6 +11,7 @@
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
     <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
@@ -23,8 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UseCase\Actividades\Queries\GetById\" />
+    <Folder Include="UseCase\Actividades\Queries\GetPopular\" />
     <Folder Include="UseCase\Congresos\Commands\Delete\" />
+    <Folder Include="UseCase\Inscripciones\" />
     <Folder Include="UseCase\PonenteTags\Commands\" />
     <Folder Include="UseCase\Schools\Commands\" />
     <Folder Include="UseCase\TiposIdentificacion\Commands\DeleteTipoIdent\" />

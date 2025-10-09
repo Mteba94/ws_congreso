@@ -27,10 +27,15 @@ internal sealed class CreateActividadHandler(IUnitOfWork unitOfWork, HandlerExec
 
             actividad.CuposDisponibles = command.CuposTotal;
 
+            if (command.Imagen is not null)
+            {
+                actividad.Imagen = await _unitOfWork.azureStorage.SaveFile(AzureContainers.ACTIVIDADES, command.Imagen);
+            }
+
             await _unitOfWork.Actividad.CreateAsync(actividad);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            var objetivosActividad = command.ObjetivosActividad!
+            var objetivosActividad = command.GetObjetivos()!
                 .Select(objetivos => new ObjetivoActividad
                 {
                     ActividadId = actividad.Id,
@@ -38,19 +43,34 @@ internal sealed class CreateActividadHandler(IUnitOfWork unitOfWork, HandlerExec
                 })
                 .ToList();
 
-            await _unitOfWork.ObjetivoActividad.RegistrarObjetivosActividad(objetivosActividad);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            if (objetivosActividad is not null && objetivosActividad.Count > 0)
+            {
+                await _unitOfWork.ObjetivoActividad.RegistrarObjetivosActividad(objetivosActividad);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            }
 
-            var actividadPonente = new ActividadPonente
+            var ponenteDto = command.GetPonente();
+            if (ponenteDto is not null)
+            {
+                var actividadPonente = new ActividadPonente
                 {
                     ActividadId = actividad.Id,
-                    PonenteId = command.ActividadPonente.PonenteId
+                    PonenteId = ponenteDto.PonenteId
                 };
 
-            await _unitOfWork.ActividadPonente.CreateAsync(actividadPonente);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+                var ponente = await _unitOfWork.Ponente.GetByIdAsync(actividadPonente.PonenteId);
+                if (ponente == null)
+                {
+                    response.IsSuccess = false;
+                    response.Message = ReplyMessage.MESSAGE_QUERY_EMPTY;
+                    return response;
+                }
 
-            var materialesActividad = command.materialesActividad!
+                await _unitOfWork.ActividadPonente.CreateAsync(actividadPonente);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            }
+
+            var materialesActividad = command.GetMateriales()!
                 .Select(materiales => new MaterialActividad
                 {
                     ActividadId = actividad.Id,
@@ -60,6 +80,8 @@ internal sealed class CreateActividadHandler(IUnitOfWork unitOfWork, HandlerExec
 
             await _unitOfWork.MaterialActividad.RegistrarMaterialesActividad(materialesActividad);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            
 
             transaction.Commit();
 

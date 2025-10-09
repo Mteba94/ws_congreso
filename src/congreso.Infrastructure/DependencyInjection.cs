@@ -3,6 +3,7 @@ using congreso.Application.Interfaces.ExternalWS;
 using congreso.Application.Interfaces.Persistence;
 using congreso.Application.Interfaces.Services;
 using congreso.Infrastructure.Authentication;
+using congreso.Infrastructure.ExternalServices.FileStorage;
 using congreso.Infrastructure.ExternalServices.Service;
 using congreso.Infrastructure.Persistence.Context;
 using congreso.Infrastructure.Persistence.Repositories;
@@ -67,6 +68,8 @@ public static class DependencyInjection
         services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
         services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
         services.AddScoped<IPermissionService, PermissionService>();
+
+        services.AddTransient<IAzureStorage, AzureStorage>();
 
         return services;
     }

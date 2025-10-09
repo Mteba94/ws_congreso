@@ -12,12 +12,24 @@ public class CodigoRepository(ApplicationDbContext context) : CommonRepository<C
 
     public async Task<CodigoVerificacion> ValidarCodigoAsync(int userId, string purpose)
     {
-        var codigoVal = await _context.CodigosVerificacion
-            .AsNoTracking()
-            .Where(c => c.UserId == userId && c.Purpose == purpose && c.Estado == (int)TipoEstado.Activo)
-            .OrderByDescending(c => c.FechaCreacion)
-            .FirstOrDefaultAsync();
-
+        CodigoVerificacion? codigoVal;
+        if (purpose == "recovery")
+        {
+            codigoVal = await _context.CodigosVerificacion
+                .AsNoTracking()
+                .Where(c => c.UserId == userId && c.Purpose == purpose && c.Estado == (int)TipoEstado.Pendiente || c.Estado ==(int)TipoEstado.Activo)
+                .OrderByDescending(c => c.FechaCreacion)
+                .FirstOrDefaultAsync();
+        }
+        else
+        {
+            codigoVal = await _context.CodigosVerificacion
+                .AsNoTracking()
+                .Where(c => c.UserId == userId && c.Purpose == purpose && c.Estado == (int)TipoEstado.Activo)
+                .OrderByDescending(c => c.FechaCreacion)
+                .FirstOrDefaultAsync();
+        }
+        
         return codigoVal!;
     }
 }

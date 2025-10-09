@@ -1,4 +1,5 @@
-﻿using congreso.Application.Interfaces.Persistence;
+﻿using congreso.Application.Interfaces.ExternalWS;
+using congreso.Application.Interfaces.Persistence;
 using congreso.Application.Interfaces.Services;
 using congreso.Domain.Entities;
 using congreso.Infrastructure.Persistence.Context;
@@ -31,6 +32,7 @@ namespace congreso.Infrastructure.Services
         public IObjetivoActividadRepository ObjetivoActividad { get; }
         public ICommonRepository<ActividadPonente> ActividadPonente { get; }
         public IMaterialActividadRepository MaterialActividad { get; }
+        public IAzureStorage azureStorage { get; }
 
         public UnitOfWork(
             ApplicationDbContext context,
@@ -54,7 +56,8 @@ namespace congreso.Infrastructure.Services
             IPonenteRepository ponente,
             IObjetivoActividadRepository objetivoActividad,
             ICommonRepository<ActividadPonente> actividadPonente,
-            IMaterialActividadRepository materialActividad)
+            IMaterialActividadRepository materialActividad,
+            IAzureStorage azureStorage)
         {
             _context = context;
             Congreso = CongresoRepository;
@@ -78,6 +81,7 @@ namespace congreso.Infrastructure.Services
             ObjetivoActividad = objetivoActividad;
             ActividadPonente = actividadPonente;
             MaterialActividad = materialActividad;
+            this.azureStorage = azureStorage;
         }
 
         public IDbTransaction BeginTransaction() => 

@@ -1,4 +1,5 @@
-﻿using congreso.Application.Interfaces.Persistence;
+﻿using congreso.Application.Interfaces.ExternalWS;
+using congreso.Application.Interfaces.Persistence;
 using congreso.Domain.Entities;
 using System.Data;
 
@@ -27,6 +28,7 @@ namespace congreso.Application.Interfaces.Services
         IObjetivoActividadRepository ObjetivoActividad { get; }
         ICommonRepository<ActividadPonente> ActividadPonente { get; }
         IMaterialActividadRepository MaterialActividad { get; }
+        IAzureStorage azureStorage { get; }
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
         IDbTransaction BeginTransaction();
     }

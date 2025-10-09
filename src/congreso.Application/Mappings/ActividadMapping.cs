@@ -15,6 +15,10 @@ public class ActividadMapping : IRegister
             .Map(dest => dest.EstadoDescripcion, src => src.Estado == (int)TipoEstado.Activo ? "Activo" : "Inactivo")
             .TwoWays();
 
+        config.NewConfig<Actividad, ActividadByIdResponseDto>()
+            .Map(dest => dest.ActividadId, src => src.Id)
+            .TwoWays();
+
         config.NewConfig<CreateActividadCommand, Actividad>()
             .Map(dest => dest.FechaActividad, src => src.Fecha)
             .Map(dest => dest.CuposTotales, src => src.CuposTotal)

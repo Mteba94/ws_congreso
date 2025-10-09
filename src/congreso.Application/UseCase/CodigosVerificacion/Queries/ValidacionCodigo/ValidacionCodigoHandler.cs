@@ -48,7 +48,7 @@ internal sealed class ValidacionCodigoHandler(IUnitOfWork unitOfWork, IFileLogge
             if (!BC.Verify(query.Codigo, codigoVal!.Codigo))
             {
                 response.IsSuccess = false;
-                response.Message = "El código de verificación es incorrecto.";
+                response.Message = ReplyMessage.MESSAGE_CODE_ERROR;
 
                 _fileLogger.Log("ws_congreso", "ValidacionCodigo", "1", response);
 
@@ -65,7 +65,14 @@ internal sealed class ValidacionCodigoHandler(IUnitOfWork unitOfWork, IFileLogge
                 return response;
             }
 
-            codigoVal.Estado = (int)TipoEstado.Inactivo;
+            int estadoF = (int)TipoEstado.Inactivo;
+
+            if (query.Purpose.Equals("recovery"))
+            {
+                estadoF = (int)TipoEstado.Pendiente;
+            }
+
+            codigoVal.Estado = estadoF;
 
             _unitOfWork.CodigoVerificacion.Update(codigoVal);
             await _unitOfWork.SaveChangesAsync();

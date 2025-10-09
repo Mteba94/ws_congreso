@@ -35,7 +35,7 @@ namespace congreso.Infrastructure.Persistence.Repositories
         }
         public async Task<T> GetByIdAsync(int id)
         {
-            var getById = await _entity.SingleOrDefaultAsync(x => x.Id.Equals(id));
+            var getById = await _entity.SingleOrDefaultAsync(x => x.Id.Equals(id) && x.Estado.Equals((int)TipoEstado.Activo) && x.usuarioEliminacion == null && x.fechaEliminacion == null);
             return getById!;
         }
         public async Task CreateAsync(T entity)

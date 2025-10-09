@@ -1,4 +1,7 @@
 ﻿using congreso.Application.Abstractions.Messaging;
+using congreso.Domain.Entities;
+using Microsoft.AspNetCore.Http;
+using System.Text.Json;
 
 namespace congreso.Application.UseCase.Actividades.Commands.Create;
 
@@ -16,11 +19,26 @@ public sealed class CreateActividadCommand : ICommand<bool>
     public string? Ubicacion { get; set; }
     public string? Requisitos { get; set; }
     public int NivelDificultadId {  get; set; }
-    public string? Imagen {  get; set; }
+    public IFormFile? Imagen {  get; set; }
 
-    public ActividadPonenteRequest ActividadPonente { get; set; } = null!;
-    public ICollection<ObjetivosActividadRequest>? ObjetivosActividad { get; set; }
-    public ICollection<MaterialesActividadRequest>? materialesActividad { get; set; }
+    public string? ActividadPonente { get; set; } = null!;
+    public string? ObjetivosActividad { get; set; }
+    public string? MaterialesActividad { get; set; }
+
+    public ActividadPonenteRequest? GetPonente() =>
+        string.IsNullOrWhiteSpace(ActividadPonente)
+            ? null
+            : JsonSerializer.Deserialize<ActividadPonenteRequest>(ActividadPonente);
+
+    public ICollection<ObjetivosActividadRequest>? GetObjetivos() =>
+        string.IsNullOrWhiteSpace(ObjetivosActividad)
+            ? null
+            : JsonSerializer.Deserialize<ICollection<ObjetivosActividadRequest>>(ObjetivosActividad);
+
+    public ICollection<MaterialesActividadRequest>? GetMateriales() =>
+        string.IsNullOrWhiteSpace(MaterialesActividad)
+            ? null
+            : JsonSerializer.Deserialize<ICollection<MaterialesActividadRequest>>(MaterialesActividad);
 }
 
 public class ActividadPonenteRequest
