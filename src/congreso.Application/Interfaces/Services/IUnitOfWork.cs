@@ -16,7 +16,6 @@ namespace congreso.Application.Interfaces.Services
         ICommonRepository<School> School { get; }
         IActividadRepository Actividad { get; }
         ICommonRepository<TipoActividad> TipoActividad { get; }
-        ICommonRepository<RoleUsuario> RoleUsuario { get; }
         ICommonRepository<Role> Role { get; }
         IPermisosRepository Permisos { get; }
         IMenuRepository Menus { get; }
@@ -30,6 +29,7 @@ namespace congreso.Application.Interfaces.Services
         IMaterialActividadRepository MaterialActividad { get; }
         IInscripcionRepository Inscripcion { get; }
         IAzureStorage azureStorage { get; }
+        IUserRoleRepository RoleUsuario {  get; }
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
         IDbTransaction BeginTransaction();
     }

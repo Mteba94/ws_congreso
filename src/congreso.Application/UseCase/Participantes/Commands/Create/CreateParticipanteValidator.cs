@@ -37,6 +37,7 @@ public class CreateParticipanteValidator : AbstractValidator<CreateParticipanteC
 
         RuleFor(x => x.NumeroIdentificacion)
             .MustAsync(async (identificacion, cancellation) => await uniqueIdentificacion(identificacion!)).WithMessage("El número de identificación ya está registrado.")
+            .When(x => x.TipoIdentificacionId != 1)
             .When(x => IsOver18(x.FechaNacimiento));
     }
 

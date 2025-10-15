@@ -2,7 +2,7 @@
 
 public class ParticipantesResponseDto
 {
-    public int ParticipanteId { get; set; }
+    public int UserId { get; set; }
     public string Pnombre { get; set; } = null!;
     public string? Snombre { get; set; }
     public string Papellido { get; set; } = null!;
@@ -15,6 +15,8 @@ public class ParticipantesResponseDto
     public string? NumeroIdentificacion { get; set; }
     public string? NivelAcademico { get; set; }
     public int Semestre { get; set; }
+    public int School { get; set; }
+    public DateTime registrationDate { get; set; }
     public int Estado { get; set; }
     public string? EstadoDescripcion { get; set; }
 }

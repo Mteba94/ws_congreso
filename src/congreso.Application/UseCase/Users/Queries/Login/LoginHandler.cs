@@ -24,6 +24,7 @@ internal sealed class LoginHandler(IUnitOfWork unitOfWork, IJwtTokenGenerator jw
         {
             _fileLogger.Log("ws_congreso", "Login", "0", JsonSerializer.Serialize(query));
 
+
             var user = await _unitOfWork.User.UserByEmailAsync(query.Email);
 
             if (user == null)
@@ -36,8 +37,35 @@ internal sealed class LoginHandler(IUnitOfWork unitOfWork, IJwtTokenGenerator jw
                 return response;
             }
 
+            if (user.Estado.Equals(3))
+            {
+                response.IsSuccess = false;
+                response.Message = ReplyMessage.MESSAGE_BLOCKED;
+
+                return response;
+            }
+
+            if(user.AccessFailedCount >= 5)
+            {
+                user.Estado = (int)TipoEstado.Bloqueado;
+
+                _unitOfWork.User.Update(user);
+                await _unitOfWork.SaveChangesAsync();
+
+                response.IsSuccess = false;
+                response.Message = ReplyMessage.MESSAGE_BLOCKED;
+
+                return response;
+            }
+
             if(!BC.Verify(query.Password, user.Password))
             {
+
+                user.AccessFailedCount++;
+
+                _unitOfWork.User.Update(user);
+                await _unitOfWork.SaveChangesAsync();
+
                 response.IsSuccess = false;
                 response.Message = ReplyMessage.MESSAGE_TOKEN_ERROR;
 
@@ -52,6 +80,15 @@ internal sealed class LoginHandler(IUnitOfWork unitOfWork, IJwtTokenGenerator jw
                 response.Message = ReplyMessage.MESSAGE_BLOCKED;
 
                 _fileLogger.Log("ws_congreso", "Login", "1", response);
+
+                return response;
+            }
+
+            if (user.Estado.Equals(4))
+            {
+                response.IsSuccess = true;
+                response.AccessToken = _jwtTokenGenerator.GenerateToken(user);
+                response.Message = "Recovery";
 
                 return response;
             }

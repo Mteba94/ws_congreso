@@ -20,7 +20,6 @@ namespace congreso.Infrastructure.Services
         public ICommonRepository<School> School { get; }
         public IActividadRepository Actividad { get; }
         public ICommonRepository<TipoActividad> TipoActividad { get; }
-        public ICommonRepository<RoleUsuario> RoleUsuario { get; }
         public ICommonRepository<Role> Role { get; }
         public IPermisosRepository Permisos { get; }
         public IMenuRepository Menus { get; }
@@ -34,6 +33,7 @@ namespace congreso.Infrastructure.Services
         public IMaterialActividadRepository MaterialActividad { get; }
         public IAzureStorage azureStorage { get; }
         public IInscripcionRepository Inscripcion { get; }
+        public IUserRoleRepository RoleUsuario { get; }
 
         public UnitOfWork(
             ApplicationDbContext context,
@@ -46,7 +46,7 @@ namespace congreso.Infrastructure.Services
             ICommonRepository<School> school,
             IActividadRepository actividad,
             ICommonRepository<TipoActividad> tipoActividad,
-            ICommonRepository<RoleUsuario> roleUsuario,
+            IUserRoleRepository roleUsuario,
             ICommonRepository<Role> role,
             IPermisosRepository permisos,
             IMenuRepository menus,

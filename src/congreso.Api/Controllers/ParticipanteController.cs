@@ -1,19 +1,12 @@
 ﻿using congreso.Application.Abstractions.Messaging;
 using congreso.Application.Dtos.Commons;
 using congreso.Application.Dtos.Participantes;
-using congreso.Application.Dtos.User;
 using congreso.Application.UseCase.Participantes.Commands.Create;
 using congreso.Application.UseCase.Participantes.Commands.Update;
 using congreso.Application.UseCase.Participantes.Queries.GetAll;
 using congreso.Application.UseCase.Participantes.Queries.GetById;
 using congreso.Application.UseCase.Participantes.Queries.GetSelect;
-using congreso.Application.UseCase.Users.Comands.CreateUser;
-using congreso.Application.UseCase.Users.Comands.UpdateUser;
-using congreso.Application.UseCase.Users.Queries.GetAllUser;
-using congreso.Application.UseCase.Users.Queries.GetById;
-using congreso.Application.UseCase.Users.Queries.GetSelect;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace congreso.Api.Controllers

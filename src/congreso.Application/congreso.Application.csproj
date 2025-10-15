@@ -30,7 +30,6 @@
     <Folder Include="UseCase\PonenteTags\Commands\" />
     <Folder Include="UseCase\Schools\Commands\" />
     <Folder Include="UseCase\TiposIdentificacion\Commands\DeleteTipoIdent\" />
-    <Folder Include="UseCase\UserRoles\Queries\GetByUserId\" />
   </ItemGroup>
 
 </Project>

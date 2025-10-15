@@ -37,6 +37,29 @@ internal sealed class CreateParticipanteHandler(IUnitOfWork unitOfWork, HandlerE
                 user.TipoIdentificacionId = 1;
             }
 
+            if(string.IsNullOrEmpty(command.Password))
+            {
+                command.Password = GenerateRandomPassword(8);
+
+                user.Estado = (int)TipoEstado.Generado;
+
+                var endpoint = "SendEmail";
+
+                object peticion = new
+                {
+                    plantilla = "plantillaConfirmacionEmail.html",
+                    to = "tebalandonis@gmail.com",
+                    subject = "Verificación de Correo",
+                    body = new Dictionary<string, string>
+                    {
+                        { "0", $"{user.Pnombre}"},
+                        { "1", $"{command.Password}"}
+                    }
+                };
+
+                var envioEmail = await _sendEmailAPI.PostDataAsync<dynamic>(endpoint, peticion);
+            }
+
             user.Password = BC.HashPassword(command.Password);
             user.EmailConfirmed = false;
             user.AccessFailedCount = 0;
@@ -67,11 +90,41 @@ internal sealed class CreateParticipanteHandler(IUnitOfWork unitOfWork, HandlerE
         {
             transaction.Rollback();
             response.IsSuccess = false;
-            response.Message = ex.Message;
+            response.Message = ReplyMessage.MESSAGE_FAILED;
 
             _fileLogger.Log("ws_congreso", "CreateUser", "1", response, ex.Message);
         }
 
         return response;
     }
+
+    private string GenerateRandomPassword(int length)
+    {
+        const string validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        var result = new System.Text.StringBuilder();
+
+        // Usamos RNGCryptoServiceProvider para una generación de números aleatorios segura
+        using (var rng = System.Security.Cryptography.RandomNumberGenerator.Create())
+        {
+            var buffer = new byte[4]; // Buffer para almacenar un entero aleatorio (4 bytes)
+            var maxCharIndex = validChars.Length;
+
+            for (int i = 0; i < length; i++)
+            {
+                // Genera 4 bytes aleatorios
+                rng.GetBytes(buffer);
+                // Convierte los bytes en un entero positivo
+                var randomInt = System.BitConverter.ToInt32(buffer, 0) & 0x7fffffff;
+
+                // Mapea el entero aleatorio al rango de índices de 'validChars'
+                var index = randomInt % maxCharIndex;
+
+                result.Append(validChars[index]);
+            }
+        }
+
+        return result.ToString();
+    }
 }
+
+

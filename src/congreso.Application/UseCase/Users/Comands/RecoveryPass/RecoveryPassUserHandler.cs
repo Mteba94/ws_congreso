@@ -68,6 +68,7 @@ internal sealed class RecoveryPassUserHandler(IUnitOfWork unitOfWork, HandlerExe
 
             user.Password = BC.HashPassword(command.NewPassword);
             user.AccessFailedCount = 0;
+            user.Estado = (int)TipoEstado.Activo;
 
             _unitOfWork.User.Update(user);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

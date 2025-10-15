@@ -1,5 +1,6 @@
 ﻿using congreso.Application.Abstractions.Messaging;
 using congreso.Application.Dtos.Commons;
+using congreso.Application.Dtos.Participantes;
 using congreso.Application.Dtos.User;
 using congreso.Application.Helpers;
 using congreso.Application.Interfaces.Services;
@@ -23,12 +24,12 @@ namespace congreso.Api.Controllers
         private readonly IExcelService _excelService = excelService;
         private readonly IPdfService _pdfService = pdfService;
 
-        [Authorize(Policy = "LISTADO DE USUARIOS")]
+        //[Authorize(Policy = "LISTADO DE USUARIOS")]
         [HttpGet]
         public async Task<IActionResult> UserList([FromQuery] GetAllUserQuery query)
         {
             var response = await _dispatcher
-                .Dispatch<GetAllUserQuery, IEnumerable<UserResponseDto>>(query, CancellationToken.None);
+                .Dispatch<GetAllUserQuery, IEnumerable<ParticipantesResponseDto>>(query, CancellationToken.None);
 
             return response.IsSuccess ? Ok(response) : BadRequest(response);
         }
@@ -79,7 +80,7 @@ namespace congreso.Api.Controllers
         public async Task<IActionResult> UserReportExcel([FromQuery] GetAllUserQuery query)
         {
             var response = await _dispatcher
-                .Dispatch<GetAllUserQuery, IEnumerable<UserResponseDto>>(query, CancellationToken.None);
+                .Dispatch<GetAllUserQuery, IEnumerable<ParticipantesResponseDto>>(query, CancellationToken.None);
 
             var columnNames = ReportColumns.GetColumnsUsers();
             var fileBytes = _excelService.GenerateToExcel(response.Data!, columnNames);
@@ -90,7 +91,7 @@ namespace congreso.Api.Controllers
         public async Task<IActionResult> UserReportPdf([FromQuery] GetAllUserQuery query)
         {
             var response = await _dispatcher
-                .Dispatch<GetAllUserQuery, IEnumerable<UserResponseDto>>(query, CancellationToken.None);
+                .Dispatch<GetAllUserQuery, IEnumerable<ParticipantesResponseDto>>(query, CancellationToken.None);
 
             var columnNames = ReportColumns.GetColumnsUsers();
             var fileBytes = _pdfService.GenerateToPdf(response.Data!, columnNames, "Usuarios");

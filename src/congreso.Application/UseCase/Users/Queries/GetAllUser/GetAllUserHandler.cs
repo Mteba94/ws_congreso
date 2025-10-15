@@ -1,5 +1,6 @@
 ﻿using congreso.Application.Abstractions.Messaging;
 using congreso.Application.Commons.Bases;
+using congreso.Application.Dtos.Participantes;
 using congreso.Application.Dtos.User;
 using congreso.Application.Interfaces.Services;
 using congreso.Utilities.Static;
@@ -9,23 +10,22 @@ using Microsoft.EntityFrameworkCore;
 using Helper = congreso.Application.Helpers.Helpers;
 
 namespace congreso.Application.UseCase.Users.Queries.GetAllUser;
-internal sealed class GetAllUserHandler(IUnitOfWork unitOfWork, IOrderingQuery orderingQuery, IFileLogger fileLogger) : IQueryHandler<GetAllUserQuery, IEnumerable<UserResponseDto>>
+internal sealed class GetAllUserHandler(IUnitOfWork unitOfWork, IOrderingQuery orderingQuery, IFileLogger fileLogger) : IQueryHandler<GetAllUserQuery, IEnumerable<ParticipantesResponseDto>>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IOrderingQuery _orderingQuery = orderingQuery;
     private readonly IFileLogger _fileLogger = fileLogger;
 
-    public async Task<BaseResponse<IEnumerable<UserResponseDto>>> Handle(GetAllUserQuery query, CancellationToken cancellationToken)
+    public async Task<BaseResponse<IEnumerable<ParticipantesResponseDto>>> Handle(GetAllUserQuery query, CancellationToken cancellationToken)
     {
-        var response = new BaseResponse<IEnumerable<UserResponseDto>>();
+        var response = new BaseResponse<IEnumerable<ParticipantesResponseDto>>();
 
         try
         {
             _fileLogger.Log("ws_congreso", "GetAllUser", "0", query);
 
             var users = _unitOfWork.User
-                .GetAllQueryable()
-                .Where(u => u.TipoParticipanteId == null);
+                .GetAllQueryable();
 
             if (query.NumFilter is not null && !string.IsNullOrEmpty(query.TextFilter))
             {
@@ -50,7 +50,7 @@ internal sealed class GetAllUserHandler(IUnitOfWork unitOfWork, IOrderingQuery o
 
             response.IsSuccess = true;
             response.TotalRecords = await users.CountAsync(cancellationToken);
-            response.Data = items.Adapt<IEnumerable<UserResponseDto>>();
+            response.Data = items.Adapt<IEnumerable<ParticipantesResponseDto>>();
             response.Message = ReplyMessage.MESSAGE_QUERY;
 
             _fileLogger.Log("ws_congreso", "GetAllUser", "1", response);

@@ -79,6 +79,11 @@ internal sealed class ValidacionCodigoHandler(IUnitOfWork unitOfWork, IFileLogge
 
             user.EmailConfirmed = true;
 
+            if (user.Estado.Equals((int)TipoEstado.Pendiente))
+            {
+                user.Estado = (int)TipoEstado.Activo;
+            }
+
             _unitOfWork.User.Update(user);
             await _unitOfWork.SaveChangesAsync();
 

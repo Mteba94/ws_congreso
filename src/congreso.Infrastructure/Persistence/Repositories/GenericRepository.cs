@@ -61,8 +61,19 @@ namespace congreso.Infrastructure.Persistence.Repositories
 
             entity.usuarioCreacion = userId;
             entity.fechaCreacion = DateTime.UtcNow;
-            entity.Estado = (int)TipoEstado.Activo;
 
+            if(entity.Estado == 0)
+            {
+                if (entity is User)
+                {
+                    entity.Estado = (int)TipoEstado.Pendiente;
+                }
+                else
+                {
+                    entity.Estado = (int)TipoEstado.Activo;
+                }
+            }
+            
             await _context.AddAsync(entity);
         }
         public void Update(T entity)
@@ -70,7 +81,7 @@ namespace congreso.Infrastructure.Persistence.Repositories
             var userIdString = _httpContextAccessor.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             int userId;
 
-            if (entity is User userEntity && userEntity.TipoParticipanteId != null)
+            if (entity is User userEntity)
             {
                 if (string.IsNullOrEmpty(userIdString))
                 {

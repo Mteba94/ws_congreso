@@ -24,15 +24,18 @@ public class AuthController(IDispatcher dispatcher, IHttpContextAccessor httpCon
 
         if (response.IsSuccess)
         {
-            var cookieOptions = new CookieOptions
+            if(response.Message != "Recovery")
             {
-                HttpOnly = false,
-                Secure = false, // True para producción
-                SameSite = SameSiteMode.None,
-                Expires = DateTimeOffset.UtcNow.AddDays(7),
-                Path = "/" // <--- Agrega esta línea
-            };
-            _httpContextAccessor.HttpContext!.Response.Cookies.Append("rt", response.RefreshToken!, cookieOptions);
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = false,
+                    Secure = false, // True para producción
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTimeOffset.UtcNow.AddDays(7),
+                    Path = "/" // <--- Agrega esta línea
+                };
+                _httpContextAccessor.HttpContext!.Response.Cookies.Append("rt", response.RefreshToken!, cookieOptions);
+            }
         }
 
         response.RefreshToken = "";

@@ -16,7 +16,7 @@ public class UserRepository(ApplicationDbContext context, IHttpContextAccessor h
     {
         var user = await _context.Usuarios
             .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.Email == email && u.Estado == (int)TipoEstado.Activo);
+            .FirstOrDefaultAsync(u => u.Email == email && u.Estado != (int)TipoEstado.Inactivo);
         return user!;
     }
 
