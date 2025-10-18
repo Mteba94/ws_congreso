@@ -42,22 +42,6 @@ internal sealed class CreateParticipanteHandler(IUnitOfWork unitOfWork, HandlerE
                 command.Password = GenerateRandomPassword(8);
 
                 user.Estado = (int)TipoEstado.Generado;
-
-                var endpoint = "SendEmail";
-
-                object peticion = new
-                {
-                    plantilla = "plantillaConfirmacionEmail.html",
-                    to = "tebalandonis@gmail.com",
-                    subject = "Verificación de Correo",
-                    body = new Dictionary<string, string>
-                    {
-                        { "0", $"{user.Pnombre}"},
-                        { "1", $"{command.Password}"}
-                    }
-                };
-
-                var envioEmail = await _sendEmailAPI.PostDataAsync<dynamic>(endpoint, peticion);
             }
 
             user.Password = BC.HashPassword(command.Password);
@@ -78,6 +62,22 @@ internal sealed class CreateParticipanteHandler(IUnitOfWork unitOfWork, HandlerE
 
             await _unitOfWork.RoleUsuario.CreateAsync(userRole);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            var endpoint = "SendEmail";
+
+            object peticion = new
+            {
+                plantilla = "plantillaConfirmacionEmail.html",
+                to = user.Email,
+                subject = "Verificación de Correo",
+                body = new Dictionary<string, string>
+                    {
+                        { "0", $"{user.Pnombre}"},
+                        { "1", $"{command.Password}"}
+                    }
+            };
+
+            var envioEmail = await _sendEmailAPI.PostDataAsync<dynamic>(endpoint, peticion);
 
             transaction.Commit();
 

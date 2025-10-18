@@ -126,7 +126,7 @@ internal sealed class GenerateDiplomaHandler(IUnitOfWork unitOfWork, IPdfGenerat
                 {
                     plantilla = "diplomaEmailTemplate.html", // Assuming a template for diploma emails exists
                     //to = inscripcion.User.Email,
-                    to = "tebalandonis@gmail.com",
+                    to = inscripcion.User.Email,
                     subject = "Tu Diploma del Congreso",
                     body = new { _0 = finalParticipantName, _1 = activityTitle }, // Assuming placeholders _0 and _1
                     attachments = diplomaUrl // Send the Azure URL as attachment

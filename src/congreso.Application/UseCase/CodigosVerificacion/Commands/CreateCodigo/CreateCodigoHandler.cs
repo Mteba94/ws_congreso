@@ -72,7 +72,7 @@ namespace congreso.Application.UseCase.CodigosVerificacion.Commands.CreateCodigo
                 object peticion = new
                 {
                     plantilla = "verificacionemail.html",
-                    to = "tebalandonis@gmail.com",
+                    to = command.Email,
                     subject = "Verificación de Correo",
                     body = new Dictionary<string, string>
                     {
