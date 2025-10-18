@@ -2,7 +2,6 @@
 using congreso.Application.Commons.Bases;
 using congreso.Application.Dtos.User;
 using congreso.Application.Interfaces.Services;
-using congreso.Domain.Entities;
 using congreso.Utilities.Static;
 using logging.Interface;
 using Mapster;

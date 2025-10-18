@@ -62,6 +62,8 @@ public static class DependencyInjection
 
         services.AddTransient<IExcelService, ExcelService>();
         services.AddTransient<IPdfService, PdfService>();
+        services.AddTransient<IPdfGeneratorService, PdfGeneratorService>();
+        services.AddTransient<IQrCodeService, QrCodeService>();
 
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();

@@ -10,6 +10,10 @@ using congreso.Application.UseCase.Users.Comands.UpdateUser;
 using congreso.Application.UseCase.Users.Queries.GetAllUser;
 using congreso.Application.UseCase.Users.Queries.GetById;
 using congreso.Application.UseCase.Users.Queries.GetSelect;
+using congreso.Application.UseCase.Users.Queries.GetUserCertificateCount;
+using congreso.Application.UseCase.Users.Queries.GetUserInscriptionsCount;
+using congreso.Application.UseCase.Users.Queries.GetAllUsersSummary;
+using congreso.Application.UseCase.Users.Queries.GetUserAttendancePercentage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -96,6 +100,42 @@ namespace congreso.Api.Controllers
             var columnNames = ReportColumns.GetColumnsUsers();
             var fileBytes = _pdfService.GenerateToPdf(response.Data!, columnNames, "Usuarios");
             return File(fileBytes, "application/pdf");
+        }
+
+        [HttpGet("{userId:int}/Certificates/Count")]
+        public async Task<IActionResult> GetUserCertificateCount(int userId)
+        {
+            var response = await _dispatcher
+                .Dispatch<GetUserCertificateCountQuery, UserCertificateCountDto>(new GetUserCertificateCountQuery(userId), CancellationToken.None);
+
+            return response.IsSuccess ? Ok(response) : BadRequest(response);
+        }
+
+        [HttpGet("{userId:int}/Inscriptions/Count")]
+        public async Task<IActionResult> GetUserInscriptionsCount(int userId)
+        {
+            var response = await _dispatcher
+                .Dispatch<GetUserInscriptionsCountQuery, UserInscriptionsCountDto>(new GetUserInscriptionsCountQuery(userId), CancellationToken.None);
+
+            return response.IsSuccess ? Ok(response) : BadRequest(response);
+        }
+
+        [HttpGet("Summary")]
+        public async Task<IActionResult> GetAllUsersSummary()
+        {
+            var response = await _dispatcher
+                .Dispatch<GetAllUsersSummaryQuery, IEnumerable<UserSummaryDto>>(new GetAllUsersSummaryQuery(), CancellationToken.None);
+
+            return response.IsSuccess ? Ok(response) : BadRequest(response);
+        }
+
+        [HttpGet("{userId:int}/AttendancePercentage")]
+        public async Task<IActionResult> GetUserAttendancePercentage(int userId)
+        {
+            var response = await _dispatcher
+                .Dispatch<GetUserAttendancePercentageQuery, UserAttendancePercentageDto>(new GetUserAttendancePercentageQuery(userId), CancellationToken.None);
+
+            return response.IsSuccess ? Ok(response) : BadRequest(response);
         }
     }
 }

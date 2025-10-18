@@ -1,7 +1,6 @@
 ﻿using congreso.Application.Abstractions.Messaging;
 using congreso.Application.Commons.Bases;
 using congreso.Application.Dtos.ObjetivosActividad;
-using congreso.Application.Dtos.Tags;
 using congreso.Application.Interfaces.Services;
 using congreso.Utilities.Static;
 using Mapster;

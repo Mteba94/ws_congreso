@@ -34,6 +34,24 @@ public class AzureStorage : IAzureStorage
         return blob.Uri.ToString();
     }
 
+    public async Task<string> SaveFileAsync(string container, string fileName, byte[] content, string contentType)
+    {
+        var client = new BlobContainerClient(_connectionString, container);
+
+        await client.CreateIfNotExistsAsync();
+
+        await client.SetAccessPolicyAsync(PublicAccessType.Blob);
+
+        var blob = client.GetBlobClient(fileName);
+
+        using (var stream = new MemoryStream(content))
+        {
+            await blob.UploadAsync(stream, new BlobHttpHeaders { ContentType = contentType });
+        }
+
+        return blob.Uri.ToString();
+    }
+
     public async Task<string> EditarFile(string container, IFormFile file, string route)
     {
         await RemoveFile(route, container);

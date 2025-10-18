@@ -6,4 +6,5 @@ public interface IActividadRepository : IGenericRepository<Actividad>
 {
     Task<Actividad> ActivitiesByUser(string userId);
     Task<Actividad> ActividadDestacada();
+    Task<Actividad?> GetActividadForUpdate(int actividadId);
 }

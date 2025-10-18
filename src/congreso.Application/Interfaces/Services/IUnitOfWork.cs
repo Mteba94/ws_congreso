@@ -28,6 +28,8 @@ namespace congreso.Application.Interfaces.Services
         ICommonRepository<ActividadPonente> ActividadPonente { get; }
         IMaterialActividadRepository MaterialActividad { get; }
         IInscripcionRepository Inscripcion { get; }
+        IDiplomaRepository Diploma { get; }
+        IAsistenciaRepository Asistencia { get; }
         IAzureStorage azureStorage { get; }
         IUserRoleRepository RoleUsuario {  get; }
         Task SaveChangesAsync(CancellationToken cancellationToken = default);

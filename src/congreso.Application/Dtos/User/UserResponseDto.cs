@@ -29,4 +29,6 @@ public class UserByIdResponseDto
     public DateTime FechaNacimiento { get; set; }
     public int TipoIdentificacionId { get; set; }
     public string? NumeroIdentificacion { get; set; }
+    public int? SchoolId { get; set; }
+
 }

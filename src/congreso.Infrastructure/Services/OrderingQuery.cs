@@ -53,6 +53,13 @@ public class OrderingQuery : IOrderingQuery
     // Aplica paginación con Skip y Take
     private static IQueryable<T> Paginate<T>(IQueryable<T> queryable, BasePagination request)
     {
+        // Verificamos si la petición es del tipo BaseFilters y si la bandera Download es true.
+        if (request is BaseFilters filters && filters.Download == true)
+        {
+            // Si es para descargar, omitimos la paginación y devolvemos todos los resultados.
+            return queryable;
+        }
+
         return queryable.Skip((request.NumPage - 1) * request.Records).Take(request.Records);
     }
 }

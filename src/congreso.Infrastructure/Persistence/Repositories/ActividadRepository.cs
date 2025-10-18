@@ -1,6 +1,7 @@
 ﻿using congreso.Application.Interfaces.Persistence;
 using congreso.Domain.Entities;
 using congreso.Infrastructure.Persistence.Context;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,5 +23,14 @@ public class ActividadRepository(ApplicationDbContext context, IHttpContextAcces
             .FirstOrDefaultAsync();
 
         return activivad!;
+    }
+
+    public async Task<Actividad?> GetActividadForUpdate(int actividadId)
+    {
+        return await _context.Actividades
+        .Include(a => a.ObjetivosActividades)
+        .Include(a => a.MaterialesActividades)
+        .Include(a => a.ActividadPonentes) // Asumiendo que el nombre de la propiedad de navegación es este
+        .FirstOrDefaultAsync(a => a.Id == actividadId);
     }
 }

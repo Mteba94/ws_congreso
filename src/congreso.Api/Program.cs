@@ -52,7 +52,7 @@ builder.Services.AddCors(options =>
         {
             builder.WithOrigins("http://localhost:4200",
                                 "http://localhost:64883",
-                                "https://tech-congress-ront.vercel.app/"
+                                "https://tech-congress-ront.vercel.app"
                                 );
             builder.AllowAnyMethod();
             builder.AllowAnyHeader();

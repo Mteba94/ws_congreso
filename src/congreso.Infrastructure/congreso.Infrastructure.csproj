@@ -9,6 +9,8 @@
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.25.1" />
     <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="itext.bouncy-castle-adapter" Version="9.3.0" />
+    <PackageReference Include="itext7" Version="9.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="9.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
@@ -16,7 +18,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.8" />
-    <PackageReference Include="QuestPDF" Version="2025.7.1" />
+    <PackageReference Include="QRCoder" Version="1.7.0" />
+    <PackageReference Include="QuestPDF" Version="2025.7.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.13.1" />
   </ItemGroup>
 

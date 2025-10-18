@@ -57,6 +57,14 @@ public class SendEmailAPI(HttpClient httpClient, IFileLogger fileLogger) : ISend
         }
 
         var responseData = await response!.Content.ReadAsStringAsync();
+
+        if (string.IsNullOrWhiteSpace(responseData))
+        {
+            // If the response is empty, return default(T) or throw a more specific exception
+            // For now, returning default(T) assuming T can be nullable or has a sensible default
+            return default(T)!;
+        }
+
         return JsonSerializer.Deserialize<T>(responseData)!;
     }
 }

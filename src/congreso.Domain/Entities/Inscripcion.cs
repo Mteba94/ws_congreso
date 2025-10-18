@@ -11,6 +11,8 @@ namespace congreso.Domain.Entities
         public int UserId { get; set; }
         public int ActividadId { get; set; }
         public DateTime FechaInscripcion { get; set; }
+        public int? Puntaje { get; set; }
+        public bool? EsGanador { get; set; }
 
         public User User { get; set; } = null!;
         public Actividad Actividad { get; set; } = null!;

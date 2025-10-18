@@ -11,6 +11,9 @@ namespace congreso.Domain.Entities
         public int InscripcionId {get; set;}
         public int ActividadId {get; set;}
         public int IdTipoDiploma {get; set;}
+        public DateTime FechaEmision { get; set; }
+        public string CodigoUnico { get; set; } = null!;
+        public string? NombrePersonalizado { get; set; }
         public string NombreArchivo { get; set; } = null!;
 
         public Inscripcion Inscripcion { get; set; } = null!;

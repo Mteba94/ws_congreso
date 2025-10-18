@@ -56,6 +56,10 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.Property<int>("Estado")
                         .HasColumnType("int");
 
+                    b.Property<string>("EstadoActividad")
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
                     b.Property<DateTime>("FechaActividad")
                         .HasColumnType("date")
                         .HasColumnName("FechaActividad");
@@ -72,6 +76,9 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NivelDificultadId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Orden")
                         .HasColumnType("int");
 
                     b.Property<string>("RequisitosPrevios")
@@ -102,6 +109,9 @@ namespace congreso.Infrastructure.Persistence.Migrations
 
                     b.Property<DateTime?>("fechaModificacion")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("permitirInscripcion")
+                        .HasColumnType("int");
 
                     b.Property<int>("usuarioCreacion")
                         .HasColumnType("int");
@@ -300,8 +310,15 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.Property<int>("ActividadId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CodigoUnico")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Estado")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaEmision")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("IdTipoDiploma")
                         .HasColumnType("int");
@@ -311,6 +328,9 @@ namespace congreso.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("NombreArchivo")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NombrePersonalizado")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("fechaCreacion")
@@ -353,12 +373,18 @@ namespace congreso.Infrastructure.Persistence.Migrations
                         .HasColumnType("int")
                         .HasColumnName("idActividad");
 
+                    b.Property<bool?>("EsGanador")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Estado")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("FechaInscripcion")
                         .HasColumnType("datetime2")
                         .HasColumnName("fechaInscripcion");
+
+                    b.Property<int?>("Puntaje")
+                        .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int")
@@ -1161,7 +1187,7 @@ namespace congreso.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("congreso.Domain.Entities.ActividadPonente", b =>
                 {
                     b.HasOne("congreso.Domain.Entities.Actividad", "Actividad")
-                        .WithMany()
+                        .WithMany("ActividadPonentes")
                         .HasForeignKey("ActividadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1248,7 +1274,7 @@ namespace congreso.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("congreso.Domain.Entities.MaterialActividad", b =>
                 {
                     b.HasOne("congreso.Domain.Entities.Actividad", "Actividad")
-                        .WithMany()
+                        .WithMany("MaterialesActividades")
                         .HasForeignKey("ActividadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1278,7 +1304,7 @@ namespace congreso.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("congreso.Domain.Entities.ObjetivoActividad", b =>
                 {
                     b.HasOne("congreso.Domain.Entities.Actividad", "Actividad")
-                        .WithMany()
+                        .WithMany("ObjetivosActividades")
                         .HasForeignKey("ActividadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1381,6 +1407,15 @@ namespace congreso.Infrastructure.Persistence.Migrations
                     b.Navigation("tipoIdentificacion");
 
                     b.Navigation("tipoParticipante");
+                });
+
+            modelBuilder.Entity("congreso.Domain.Entities.Actividad", b =>
+                {
+                    b.Navigation("ActividadPonentes");
+
+                    b.Navigation("MaterialesActividades");
+
+                    b.Navigation("ObjetivosActividades");
                 });
 
             modelBuilder.Entity("congreso.Domain.Entities.Inscripcion", b =>

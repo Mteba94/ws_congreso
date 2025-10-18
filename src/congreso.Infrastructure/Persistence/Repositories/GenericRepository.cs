@@ -43,7 +43,7 @@ namespace congreso.Infrastructure.Persistence.Repositories
             var userIdString = _httpContextAccessor.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             int userId;
 
-            if (entity is User userEntity && userEntity.TipoParticipanteId != null)
+            if (entity is User userEntity && userEntity.TipoParticipanteId != null  || entity is Asistencia)
             {
                 if (string.IsNullOrEmpty(userIdString))
                 {

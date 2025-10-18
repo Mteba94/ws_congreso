@@ -19,5 +19,4 @@ public sealed class UpdateParticipanteCommand : ICommand<bool>
     public string? SchoolName { get; set; }
     public int NivelAcademicoId { get; set; }
     public int? Semestre { get; set; }
-    public string Password { get; set; } = null!;
 }

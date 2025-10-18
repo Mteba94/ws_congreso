@@ -22,9 +22,24 @@ namespace congreso.Domain.Entities
         public string? RequisitosPrevios { get; set; }
         public int NivelDificultadId { get; set; }
         public string? Imagen {  get; set; }
+        public string? EstadoActividad { get; set; }
+        public int Orden {  get; set; }
+        public int permitirInscripcion { get; set; }
 
         public Congreso Congreso { get; set; } = null!;
         public TipoActividad TipoActividad { get; set; } = null!;
         public NivelDificultad NivelDificultad { get; set; } = null!;
+
+        public virtual ICollection<ActividadPonente> ActividadPonentes { get; set; }
+        public virtual ICollection<MaterialActividad> MaterialesActividades { get; set; }
+        public virtual ICollection<ObjetivoActividad> ObjetivosActividades { get; set; }
+
+
+        public Actividad()
+        {
+            ActividadPonentes = new HashSet<ActividadPonente>();
+            MaterialesActividades = new HashSet<MaterialActividad>();
+            ObjetivosActividades = new HashSet<ObjetivoActividad>();
+        }
     }
 }

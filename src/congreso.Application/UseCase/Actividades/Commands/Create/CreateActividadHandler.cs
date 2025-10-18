@@ -23,9 +23,11 @@ internal sealed class CreateActividadHandler(IUnitOfWork unitOfWork, HandlerExec
 
         try
         {
+
             var actividad = command.Adapt<Actividad>();
 
             actividad.CuposDisponibles = command.CuposTotal;
+            actividad.EstadoActividad = ActividadEstado.Pendiente;
 
             if (command.Imagen is not null)
             {

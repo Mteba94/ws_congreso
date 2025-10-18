@@ -59,6 +59,9 @@ namespace congreso.Infrastructure.Persistence.Context.Configurations
             builder.Property(a => a.RequisitosPrevios)
                 .HasMaxLength(500)
                 .HasColumnName("RequisitosPrevios");
+
+            builder.Property(a => a.EstadoActividad)
+                .HasMaxLength(25);
         }
     }
 }

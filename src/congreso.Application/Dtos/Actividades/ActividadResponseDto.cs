@@ -17,6 +17,7 @@ public class ActividadResponseDto
     public string? RequisitosPrevios { get; set; }
     public int NivelDificultadId { get; set; }
     public string? Imagen { get; set; }
+    public string? EstadoActividad { get; set; }
     public int Estado { get; set; }
     public string? EstadoDescripcion { get; set; }
 }
@@ -38,4 +39,5 @@ public class ActividadByIdResponseDto
     public string? RequisitosPrevios { get; set; }
     public int NivelDificultadId { get; set; }
     public string? Imagen { get; set; }
+    public string? EstadoActividad { get; set; }
 }
