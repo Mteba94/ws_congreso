@@ -96,7 +96,7 @@ internal sealed class CreateActividadHandler(IUnitOfWork unitOfWork, HandlerExec
         {
             transaction.Rollback();
             response.IsSuccess = false;
-            response.Message = ReplyMessage.MESSAGE_FAILED;
+            response.Message = $"{ReplyMessage.MESSAGE_FAILED} Detalles: {ex.Message}";
 
             _fileLogger.Log("ws_congreso", "CreateActividad", "1", response, ex.Message);
         }
