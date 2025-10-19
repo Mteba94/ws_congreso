@@ -3,14 +3,16 @@ using congreso.Application.Commons.Bases;
 using congreso.Application.Interfaces.Services;
 using congreso.Domain.Entities;
 using congreso.Utilities.Static;
+using logging.Interface;
 using Mapster;
 
 namespace congreso.Application.UseCase.Actividades.Commands.Create;
 
-internal sealed class CreateActividadHandler(IUnitOfWork unitOfWork, HandlerExecutor executor) : ICommandHandler<CreateActividadCommand, bool>
+internal sealed class CreateActividadHandler(IUnitOfWork unitOfWork, HandlerExecutor executor, IFileLogger fileLogger) : ICommandHandler<CreateActividadCommand, bool>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly HandlerExecutor _executor = executor;
+    private readonly IFileLogger _fileLogger = fileLogger;
     public async Task<BaseResponse<bool>> Handle(CreateActividadCommand command, CancellationToken cancellationToken)
     {
         return await _executor.ExecuteAsync(command, () => CreateActividadAsync(command, cancellationToken), cancellationToken);
@@ -95,6 +97,8 @@ internal sealed class CreateActividadHandler(IUnitOfWork unitOfWork, HandlerExec
             transaction.Rollback();
             response.IsSuccess = false;
             response.Message = ReplyMessage.MESSAGE_FAILED;
+
+            _fileLogger.Log("ws_congreso", "CreateActividad", "1", response, ex.Message);
         }
 
         return response;

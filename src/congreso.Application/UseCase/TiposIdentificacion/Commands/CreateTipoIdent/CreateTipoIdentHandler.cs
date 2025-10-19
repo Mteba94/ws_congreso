@@ -31,6 +31,7 @@ internal sealed class CreateTipoIdentHandler(IUnitOfWork unitOfWork, IFileLogger
 
             var tipoIdent = command.Adapt<TipoIdentificacion>();
 
+
             await _unitOfWork.TipoIdentificacion.CreateAsync(tipoIdent);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 

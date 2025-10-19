@@ -19,7 +19,7 @@ internal sealed class ValidacionCodigoHandler(IUnitOfWork unitOfWork, IFileLogge
         var response = new BaseResponse<bool>();
         try
         {
-            _fileLogger.Log("ws_congreso", "ValidacionCodigo", "0", query);
+            //_fileLogger.Log("ws_congreso", "ValidacionCodigo", "0", query);
 
             var user = await _unitOfWork.User.UserByEmailAsync(query.Email);
 
@@ -91,12 +91,12 @@ internal sealed class ValidacionCodigoHandler(IUnitOfWork unitOfWork, IFileLogge
             response.IsSuccess = true;
             response.Message = "Código de verificación válido.";
 
-            _fileLogger.Log("ws_congreso", "ValidacionCodigo", "1", response);
+            //_fileLogger.Log("ws_congreso", "ValidacionCodigo", "1", response);
         }
         catch (Exception ex)
         {
             response.IsSuccess = false;
-            response.Message = $"Error al validar el código: {ex.Message}";
+            response.Message = ReplyMessage.MESSAGE_FAILED;
 
             _fileLogger.Log("ws_congreso", "ValidacionCodigo", "1", response, ex.Message);
         }

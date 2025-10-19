@@ -43,6 +43,8 @@ public class TipoIdentificacionRepository : ITipoIdentificacionRepository
 
     public async Task CreateAsync(TipoIdentificacion entity)
     {
+        entity.Estado = (int)TipoEstado.Activo;
+
         await _context.AddAsync(entity);
     }
     public void Update(TipoIdentificacion entity)
