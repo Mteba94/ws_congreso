@@ -1,5 +1,6 @@
 ﻿using congreso.Application.Abstractions.Messaging;
 using congreso.Application.Dtos.Commons;
+using congreso.Application.Dtos.Inscripciones;
 using congreso.Application.Dtos.Participantes;
 using congreso.Application.Dtos.User;
 using congreso.Application.Helpers;
@@ -7,14 +8,14 @@ using congreso.Application.Interfaces.Services;
 using congreso.Application.UseCase.Users.Comands.CreateUser;
 using congreso.Application.UseCase.Users.Comands.DeleteUser;
 using congreso.Application.UseCase.Users.Comands.UpdateUser;
+using congreso.Application.UseCase.Users.Queries.GenerateQrCodeForUser;
 using congreso.Application.UseCase.Users.Queries.GetAllUser;
+using congreso.Application.UseCase.Users.Queries.GetAllUsersSummary;
 using congreso.Application.UseCase.Users.Queries.GetById;
 using congreso.Application.UseCase.Users.Queries.GetSelect;
+using congreso.Application.UseCase.Users.Queries.GetUserAttendancePercentage;
 using congreso.Application.UseCase.Users.Queries.GetUserCertificateCount;
 using congreso.Application.UseCase.Users.Queries.GetUserInscriptionsCount;
-using congreso.Application.UseCase.Users.Queries.GetAllUsersSummary;
-using congreso.Application.UseCase.Users.Queries.GetUserAttendancePercentage;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace congreso.Api.Controllers
@@ -134,6 +135,15 @@ namespace congreso.Api.Controllers
         {
             var response = await _dispatcher
                 .Dispatch<GetUserAttendancePercentageQuery, UserAttendancePercentageDto>(new GetUserAttendancePercentageQuery(userId), CancellationToken.None);
+
+            return response.IsSuccess ? Ok(response) : BadRequest(response);
+        }
+
+        [HttpGet("{userId:int}/GenerateQrCode/{actividadId:int}")]
+        public async Task<IActionResult> GenerateQrCodeForUser(int userId, int actividadId)
+        {
+            var response = await _dispatcher
+                .Dispatch<GenerateQrCodeForUserQuery, GenerateUserQrCodeResponseDto>(new GenerateQrCodeForUserQuery(userId, actividadId), CancellationToken.None);
 
             return response.IsSuccess ? Ok(response) : BadRequest(response);
         }

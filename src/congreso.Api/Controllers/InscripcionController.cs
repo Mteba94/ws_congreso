@@ -7,7 +7,6 @@ using congreso.Application.UseCase.Inscripciones.Commands.UpdateResult;
 using congreso.Application.UseCase.Inscripciones.Queries.GetAll;
 using congreso.Application.UseCase.Inscripciones.Queries.GetByUserId;
 using congreso.Application.UseCase.Inscripciones.Queries.GetTopWinnersByActividad;
-using congreso.Application.UseCase.Inscripciones.Queries.GenerateQrCodeForInscription;
 using Microsoft.AspNetCore.Mvc;
 
 namespace congreso.Api.Controllers
@@ -77,15 +76,6 @@ namespace congreso.Api.Controllers
         {
             var response = await _dispatcher
                 .Dispatch<DeleteInscripcionCommand, bool>(new DeleteInscripcionCommand { InscripcionId = inscripcionId }, CancellationToken.None);
-            return response.IsSuccess ? Ok(response) : BadRequest(response);
-        }
-
-        [HttpGet("{inscripcionId:int}/GenerateQrCode")]
-        public async Task<IActionResult> GenerateQrCodeForInscription(int inscripcionId)
-        {
-            var response = await _dispatcher
-                .Dispatch<GenerateQrCodeForInscriptionQuery, GenerateQrCodeResponseDto>(new GenerateQrCodeForInscriptionQuery(inscripcionId), CancellationToken.None);
-
             return response.IsSuccess ? Ok(response) : BadRequest(response);
         }
     }

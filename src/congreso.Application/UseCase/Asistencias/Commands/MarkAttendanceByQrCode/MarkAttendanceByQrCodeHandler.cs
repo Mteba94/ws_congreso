@@ -25,41 +25,40 @@ internal sealed class MarkAttendanceByQrCodeHandler(IDispatcher dispatcher, IUni
         try
         {
             // Parse QR Code Content
-            var match = Regex.Match(command.QrCodeContent, @"^inscription:(\d+)$");
-            if (!match.Success || !int.TryParse(match.Groups[1].Value, out int inscriptionId))
+            var match = Regex.Match(command.QrCodeContent, @"^user:(\d+),email:([^@]+@[^\.]+\.[^\.]+)$");
+            if (!match.Success || !int.TryParse(match.Groups[1].Value, out int userId) || string.IsNullOrWhiteSpace(match.Groups[2].Value))
             {
                 response.IsSuccess = false;
-                response.Message = "Contenido de QR inválido.";
+                response.Message = "Contenido de QR inválido o incompleto.";
+                return response;
+            }
+            string userEmailFromQr = match.Groups[2].Value;
+
+            // Retrieve User
+            var user = await _unitOfWork.User.GetByIdAsync(userId);
+            if (user == null || user.Email != userEmailFromQr)
+            {
+                response.IsSuccess = false;
+                response.Message = "Usuario no encontrado o correo electrónico no coincide.";
                 return response;
             }
 
-            // Retrieve Inscription (with User)
-            var inscripcion = await _unitOfWork.Inscripcion.GetByIdAsync(inscriptionId);
+            // Retrieve Inscription for the specific user and activity
+            var inscripcion = (await _unitOfWork.Inscripcion.GetAllAsync())
+                                .FirstOrDefault(i => i.UserId == userId && i.ActividadId == command.ActividadId);
+
             if (inscripcion == null)
             {
                 response.IsSuccess = false;
-                response.Message = "Inscripción no encontrada.";
-                return response;
-            }
-
-            // Ensure User is loaded
-            if (inscripcion.User == null)
-            {
-                inscripcion.User = await _unitOfWork.User.GetByIdAsync(inscripcion.UserId);
-            }
-
-            if (inscripcion.User == null)
-            {
-                response.IsSuccess = false;
-                response.Message = "No se pudo obtener la información del usuario para la inscripción.";
+                response.Message = "Inscripción no encontrada para este usuario y actividad.";
                 return response;
             }
 
             // Dispatch the existing MarkAttendanceCommand
             var markAttendanceCommand = new MarkAttendanceCommand
             {
-                ActividadId = inscripcion.ActividadId, // Get ActividadId from inscription
-                Email = inscripcion.User.Email // Get User Email from inscription
+                ActividadId = command.ActividadId, // ActividadId now comes from the command
+                Email = user.Email // Email comes from the fetched user
             };
 
             var markAttendanceResponse = await _dispatcher.Dispatch<MarkAttendanceCommand, bool>(markAttendanceCommand, cancellationToken);

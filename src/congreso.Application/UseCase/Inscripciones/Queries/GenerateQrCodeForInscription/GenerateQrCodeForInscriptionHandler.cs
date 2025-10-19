@@ -3,7 +3,6 @@ using congreso.Application.Commons.Bases;
 using congreso.Application.Dtos.Inscripciones;
 using congreso.Application.Interfaces.Services;
 using congreso.Utilities.Static;
-using System.Text;
 
 namespace congreso.Application.UseCase.Inscripciones.Queries.GenerateQrCodeForInscription;
 
@@ -13,10 +12,6 @@ internal sealed class GenerateQrCodeForInscriptionHandler(IUnitOfWork unitOfWork
     private readonly IQrCodeService _qrCodeService = qrCodeService;
     private readonly HandlerExecutor _executor = executor;
 
-    public async Task<BaseResponse<GenerateQrCodeResponseDto>> Handle(GenerateQrCodeForInscriptionQuery query, CancellationToken cancellationToken)
-    {
-        return await _executor.ExecuteAsync(query, () => GenerateQrCodeForInscriptionAsync(query, cancellationToken), cancellationToken);
-    }
 
     private async Task<BaseResponse<GenerateQrCodeResponseDto>> GenerateQrCodeForInscriptionAsync(GenerateQrCodeForInscriptionQuery query, CancellationToken cancellationToken)
     {
@@ -55,5 +50,10 @@ internal sealed class GenerateQrCodeForInscriptionHandler(IUnitOfWork unitOfWork
         }
 
         return response;
+    }
+
+    async Task<BaseResponse<GenerateQrCodeResponseDto>> IQueryHandler<GenerateQrCodeForInscriptionQuery, GenerateQrCodeResponseDto>.Handle(GenerateQrCodeForInscriptionQuery query, CancellationToken cancellationToken)
+    {
+        return await _executor.ExecuteAsync(query, () => GenerateQrCodeForInscriptionAsync(query, cancellationToken), cancellationToken);
     }
 }
